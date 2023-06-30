@@ -9,7 +9,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("components")]
     public Rigidbody2D rb;
-    public GameObject groundPoint;
+    public Transform groundPoint;
+    public Transform leftPoint;
+    public Transform rightPoint;
 
 
     [Space(5)]
@@ -33,7 +35,8 @@ public class PlayerMovement : MonoBehaviour
     [Range(0f, 1)] public float deccelAir;
 
 
-    private Vector2 checkSize;
+    private Vector2 groundCheckSize = new Vector2(0.49f, 0.05f);
+    private Vector2 wallCheckSize = new Vector2(0.35f, 1f);
     public LayerMask floor;
 
     [Space(5)]
@@ -68,14 +71,11 @@ public class PlayerMovement : MonoBehaviour
     private float accelRate;
     private Vector2 lastVel;
 
-    public bool onGroundTime;
-    public bool onJumpTime;
 
     // Start is called before the first frame update
     void Start()
     {
         gravityScale = rb.gravityScale;
-        checkSize = new Vector2(0.5f, 0.1f);
         canDash = true;
 
     }
@@ -103,28 +103,54 @@ public class PlayerMovement : MonoBehaviour
         }
          */
 
+        lastGroundTime -= Time.deltaTime;
+        lastDashTime -= Time.deltaTime;
+        dashTime -= Time.deltaTime;
+        lastJumpTime -= Time.deltaTime;
+        freezeTime -= Time.deltaTime;
+
+        if (isDashing)
+        {
+            if (dashTime > 0f) whileDashing();
+            else finishedDashing();
+        }
+
+        if (lastDashTime > 0f) canDash = false;
+        else canDash = true;
+
+        if (freezeTime > 0) isFrozen = true;
+        else if (isFrozen == true)
+        {
+            rb.velocity = lastVel;
+            isFrozen = false;
+        }
+        
+        if (!isJumping)
+        {
+            isGrounded = Physics2D.OverlapBox(groundPoint.position, groundCheckSize, 0, floor);
+
+        }
+
+        
+        /*
         if (lastGroundTime > 0f)
         {
-            onGroundTime = true;
             lastGroundTime -= Time.deltaTime;
 
             if (lastGroundTime < 0f)
             {
                 lastGroundTime = 0f;
-                onGroundTime = false;
 
             }
 
         }
         if (lastJumpTime > 0f)
         {
-            onJumpTime = false;
             lastJumpTime -= Time.deltaTime;
 
             if (lastJumpTime < 0f)
             {
                 lastJumpTime = 0f;
-                onJumpTime = true;
 
             }
 
@@ -164,6 +190,8 @@ public class PlayerMovement : MonoBehaviour
                 freezeTime = 0f;
             }
         }
+        
+        */
 
 
 
@@ -185,17 +213,17 @@ public class PlayerMovement : MonoBehaviour
 
 
         if (!isDashing || !isFrozen) rb.AddForce(movement * Vector2.right);
-  
+
+
+
 
         
 
-        isGrounded = Physics2D.OverlapBox(groundPoint.transform.position, checkSize, 0, floor);
 
         if (isGrounded)
         {
             lastGroundTime = jumpBufferTime;
             isJumping = false;
-            onGroundTime = true;
             //canDash = true;
         }
 
@@ -307,11 +335,11 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(groundPoint.transform.position, checkSize);
-        /*Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_frontWallCheckPoint.position, _wallCheckSize);
-        Gizmos.DrawWireCube(_backWallCheckPoint.position, _wallCheckSize);
-        */
+        Gizmos.DrawWireCube(groundPoint.transform.position, groundCheckSize);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(rightPoint.position, wallCheckSize);
+        Gizmos.DrawWireCube(leftPoint.position, wallCheckSize);
+        
     }
 }
 
