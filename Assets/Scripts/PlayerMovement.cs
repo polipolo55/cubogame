@@ -26,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
     public bool frictionEnabled;
     public float frictionMult;
     public float dashAmount;
+    public float dashCD;
+    public float freezeAmountDash;
+    public int numberOfJumps;
+    [Range(0f, 1)] public float accelAir;
+    [Range(0f, 1)] public float deccelAir;
 
 
     private Vector2 checkSize;
@@ -43,32 +48,35 @@ public class PlayerMovement : MonoBehaviour
 
     private float lastGroundTime;
     private float lastJumpTime;
-    private float dashTime;
+    private float lastDashTime;
+    public float freezeTime;
 
+
+    private float dashTime;
 
     private float gravityScale;
 
 
     private bool isGrounded;
-    private bool isJumping;
+    public bool isJumping;
     private bool isDashing;
+    public bool isFrozen;
 
     private bool canJump;
-    private bool canDash;
+    public bool canDash;
 
+    private float accelRate;
+    private Vector2 lastVel;
 
-    private float coyotejump;
-    private bool jumpInputReleased;
-    
-
-    private bool onGroundTime;
-    private bool onJumpTime;
+    public bool onGroundTime;
+    public bool onJumpTime;
 
     // Start is called before the first frame update
     void Start()
     {
         gravityScale = rb.gravityScale;
         checkSize = new Vector2(0.5f, 0.1f);
+        canDash = true;
 
     }
 
@@ -97,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (lastGroundTime > 0f)
         {
+            onGroundTime = true;
             lastGroundTime -= Time.deltaTime;
 
             if (lastGroundTime < 0f)
@@ -109,12 +118,13 @@ public class PlayerMovement : MonoBehaviour
         }
         if (lastJumpTime > 0f)
         {
+            onJumpTime = false;
             lastJumpTime -= Time.deltaTime;
 
             if (lastJumpTime < 0f)
             {
                 lastJumpTime = 0f;
-                onJumpTime = false;
+                onJumpTime = true;
 
             }
 
@@ -131,7 +141,33 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (lastGroundTime > 0 && lastJumpTime > 0 && !isJumping) canJump = true;
+        if (lastDashTime > 0f) 
+        {
+            canDash = false;
+            lastDashTime -= Time.deltaTime;
+            if (lastDashTime < 0f)
+            {
+                lastDashTime = 0f;
+                if (!isDashing && isGrounded) canDash = true;
+                else lastDashTime = 0.1f;
+            }
+        } 
+       
+        if (freezeTime > 0f)
+        {
+            isFrozen = true;
+            freezeTime -= Time.deltaTime;
+            if (freezeTime < 0f)
+            {
+                rb.velocity = lastVel;
+                isFrozen = false;
+                freezeTime = 0f;
+            }
+        }
+
+
+
+        if (lastGroundTime > 0f && lastJumpTime > 0f && !isJumping) canJump = true;
         else canJump = false;
 
 
@@ -139,13 +175,17 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-            
+ 
         float targetSpeed = moveInput * moveSpeed;
         float speedDif = targetSpeed - rb.velocity.x;
-        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+        if (isGrounded) accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+        else accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration*accelAir : deceleration * deccelAir;
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
-        rb.AddForce(movement * Vector2.right);
+
+
+        if (!isDashing || !isFrozen) rb.AddForce(movement * Vector2.right);
+  
 
         
 
@@ -156,12 +196,8 @@ public class PlayerMovement : MonoBehaviour
             lastGroundTime = jumpBufferTime;
             isJumping = false;
             onGroundTime = true;
-            if(!isDashing) canDash = true;
             //canDash = true;
         }
-
-
-        coyotejump = 1f + lastGroundTime;
 
         if (canJump) 
         {
@@ -173,26 +209,11 @@ public class PlayerMovement : MonoBehaviour
             whileJumping();
         }
 
-    
 
-        if (canDash && dashInput == 1)
+        if (canDash && dashInput == 1 && moveInput != 0)
         {
             Dash();
         }
-
-
-
-
-        if (rb.velocity.y < 0.01f && !isDashing)
-        {
-            rb.gravityScale = gravityScale * fallGravMultiplyer;
-            isJumping = false;
-        }
-        else if (!isDashing) rb.gravityScale = gravityScale;
-     
-    
-
-      
 
         
         if (lastGroundTime > 0 && Mathf.Abs(moveInput) < 0.01f && frictionEnabled)
@@ -204,6 +225,21 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector2.right * -frictionAmout, ForceMode2D.Impulse);
         }
 
+        if (isFrozen)
+        {
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+        }
+        else
+        {
+
+            if (rb.velocity.y < 0.01f && !isDashing)
+            {
+                rb.gravityScale = gravityScale * fallGravMultiplyer;
+                isJumping = false;
+            }
+            else if (!isDashing) rb.gravityScale = gravityScale;
+        }
     }
 
     public void HorizontalMove(InputAction.CallbackContext ctx)
@@ -214,7 +250,7 @@ public class PlayerMovement : MonoBehaviour
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
         jumpInput = ctx.ReadValue<float>();
-        if(jumpInput == 1) lastJumpTime = jumpBufferTime;
+        lastJumpTime = jumpBufferTime;
     }
     public void DashMove(InputAction.CallbackContext ctx)
     {
@@ -230,16 +266,17 @@ public class PlayerMovement : MonoBehaviour
         lastGroundTime = -1f;
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         isJumping = true;
-        jumpInputReleased = false;
 
 
     }
 
     private void Dash()
     {
-        dashTime = dashAmount * 0.1f;
+        lastVel = new Vector2(rb.velocity.x, 0);
+        rb.velocity = Vector2.zero; 
+        dashTime = dashAmount * 0.015f;
         isDashing = true;
-        rb.AddForce(Vector2.right * dashAmount * 5 * moveInput, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.right * dashAmount * 8 * moveInput, ForceMode2D.Impulse);
         canDash = false;    }
 
     private void whileDashing()
@@ -248,9 +285,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void finishedDashing()
-    {
+    {   
+        freezeTime = freezeAmountDash;
+        lastDashTime = dashCD;
         rb.gravityScale = gravityScale;
-        rb.velocity = Vector2.zero;
         isDashing = false;
     }
 
@@ -270,6 +308,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(groundPoint.transform.position, checkSize);
+        /*Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_frontWallCheckPoint.position, _wallCheckSize);
+        Gizmos.DrawWireCube(_backWallCheckPoint.position, _wallCheckSize);
+        */
     }
 }
 
