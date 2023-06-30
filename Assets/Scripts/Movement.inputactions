@@ -1,0 +1,140 @@
+{
+    "name": "Movement",
+    "maps": [
+        {
+            "name": "Movement",
+            "id": "a915f816-982f-4a1a-bc9b-57e20df4e042",
+            "actions": [
+                {
+                    "name": "Horizontal",
+                    "type": "Button",
+                    "id": "87a71593-12a0-4110-91f1-24230a50e745",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "d3a09a0b-802f-4f5e-92d4-7fe9a64eabeb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "328a4fc8-52bb-43fe-9bb1-a7aad6321b94",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "1D Axis",
+                    "id": "b87275b6-c1c1-47d6-b026-8f6840f93b25",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "1610f12a-31a3-4e20-a57c-4dfee7e986c2",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "negative",
+                    "id": "9bac36cb-403e-4bcd-bb56-435d126961a0",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "05831dc7-e7cc-414c-b733-0e1157492848",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "3d0ebcca-2114-425a-9221-21ca58ad216f",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8528db30-a3d8-455f-9f4a-250ff76e395d",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d73795f7-7b63-457c-b108-bdeff29d2fca",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc3bd70c-0e43-4ac8-a9a0-34fc7ee66b09",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c0a12ef-58da-474c-b0ed-b8ff3663ef9c",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
