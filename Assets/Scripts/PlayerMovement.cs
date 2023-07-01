@@ -71,11 +71,11 @@ public class PlayerMovement : MonoBehaviour
     public bool isWallJumping { get; private set; }
     public bool isSliding { get; private set; }
 
-    
-    private float lastOnGroundTime;
-    private float lastOnWallTime;
-    private float lastOnWallRightTime;
-    private float lastOnWallLeftTime;
+    [Header("Degub")]
+    public float lastOnGroundTime;
+    public float lastOnWallTime;
+    public float lastOnWallRightTime;
+    public float lastOnWallLeftTime;
 
     //Jump
     private bool _isJumpCut;
@@ -92,13 +92,12 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Transform groundPoint;
 
-    [SerializeField] private Vector2 groundCheckSize = new Vector2(0.49f, 0.03f);
+    private Vector2 groundCheckSize = new Vector2(0.9f, 0.03f);
 
     [Space(5)]
     [SerializeField] private Transform rightPoint;
     [SerializeField] private Transform leftPoint;
-    [SerializeField] private Vector2 wallCheckSize = new Vector2(0.5f, 1f);
-
+    private Vector2 wallCheckSize;
     [SerializeField] private LayerMask floor;
 
     private void Awake()
@@ -116,6 +115,8 @@ public class PlayerMovement : MonoBehaviour
         runAccelAmount = (50 * runAccel) / runMaxSpeed;
         runDeccelAmount = (50 * runDecceleration) / runMaxSpeed;
         jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
+
+        wallCheckSize = new Vector2(0.5f, 0.9f * transform.localScale.y);
 
         #region Variable Ranges
         runAccel = Mathf.Clamp(runAccel, 0.01f, runMaxSpeed);

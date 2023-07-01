@@ -317,13 +317,15 @@ MonoBehaviour:
   wallJumpRunLerp: 0.8
   wallJumpTime: 0.1
   doTurnOnWallJump: 1
-  coyoteTime: 0.2
-  jumpInputBufferTime: 0.2
+  coyoteTime: 0.1
+  jumpInputBufferTime: 0.1
+  lastOnGroundTime: 0
+  lastOnWallTime: 0
+  lastOnWallRightTime: 0
+  lastOnWallLeftTime: 0
   groundPoint: {fileID: 1569985798}
-  groundCheckSize: {x: 0.49, y: 0.05}
   rightPoint: {fileID: 797222000}
   leftPoint: {fileID: 1896431412}
-  wallCheckSize: {x: 0.35, y: 1}
   floor:
     serializedVersion: 2
     m_Bits: 64
