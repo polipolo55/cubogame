@@ -503,7 +503,8 @@ public class PlayerMovement : MonoBehaviour
     {
         float speed = Mathf.Abs(rb.velocity.x / runMaxSpeed);
         anim.SetFloat("speed", Mathf.Abs(speed));
-        anim.SetBool("isJumping", lastOnGroundTime != coyoteTime);
+        anim.SetBool("isInAir", lastOnGroundTime != coyoteTime);
+        anim.SetBool("isJumping", isJumping);
     }
 
     //condocions fetes be =)
