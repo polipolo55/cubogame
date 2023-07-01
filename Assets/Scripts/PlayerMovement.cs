@@ -186,7 +186,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Run(dashEndRunLerp);
         }
-        Debug.Log(rb.velocity.x);
 
        // aqui shauria de posar el slide a part
     }
@@ -195,23 +194,19 @@ public class PlayerMovement : MonoBehaviour
     {
         moveInput.x = ctx.ReadValue<float>();
         if(moveInput.x != 0) CheckDirectionToFace(moveInput.x > 0);
-        Debug.Log(moveInput.x);
     }
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
         moveInput.y = ctx.ReadValue<float>();
-        Debug.Log(moveInput.y);
     }
     public void JumpMove(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
         {
             OnJumpInput();
-            Debug.Log("jump");
         } else if (ctx.canceled)
         {
             OnJumpRelease();
-            Debug.Log("stopped jump");
         }
     }
     public void DashMove(InputAction.CallbackContext ctx)
@@ -504,7 +499,7 @@ public class PlayerMovement : MonoBehaviour
         float speed = Mathf.Abs(rb.velocity.x / runMaxSpeed);
         anim.SetFloat("speed", Mathf.Abs(speed));
         anim.SetBool("isJumping", isJumping || isWallJumping);
-        anim.SetBool("isInAir", lastOnGroundTime != coyoteTime);
+        anim.SetBool("isInAir", lastOnGroundTime != jumpInputBufferTime);
     }
 
     //condocions fetes be =)
