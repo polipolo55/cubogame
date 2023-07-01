@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
+using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     //variables to tweak
-
+    
     [Header("gravetat")]
     private float gravityStrength; 
     private float gravityScale; 
@@ -121,9 +123,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Space(5)]
     [SerializeField] private Transform rightPoint;
-    [SerializeField] private Transform leftPoint;
-    private Vector2 wallCheckSize;
+    [SerializeField] private Transform leftPoint;    
     [SerializeField] private LayerMask floor;
+    public Animator anim;
+
+    private Vector2 wallCheckSize;
 
     private void Awake()
     {
@@ -163,6 +167,8 @@ public class PlayerMovement : MonoBehaviour
 
         Friction();
 
+        AnimationHandler();
+
 
     }
 
@@ -180,6 +186,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Run(dashEndRunLerp);
         }
+        Debug.Log(rb.velocity.x);
 
        // aqui shauria de posar el slide a part
     }
@@ -491,6 +498,13 @@ public class PlayerMovement : MonoBehaviour
             force.y -= rb.velocity.y;
         rb.AddForce(force, ForceMode2D.Impulse);
     }   
+
+    private void AnimationHandler()
+    {
+        float speed = Mathf.Abs(rb.velocity.x / runMaxSpeed);
+        anim.SetFloat("speed", Mathf.Abs(speed));
+        anim.SetBool("isJumping", lastOnGroundTime != coyoteTime);
+    }
 
     //condocions fetes be =)
 

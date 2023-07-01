@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 93192a0b48a74af44a55c5e2cbca1d7d
+guid: 240688f5383ceb44f9f76b21df79d0f2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -70,9 +70,9 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
-    resizeAlgorithm: 0
+    resizeAlgorithm: 1
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Character Idle 48x48_0
+      name: wall land 48x48_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +137,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 741a4e70e740c7442874ae2c70780979
-      internalID: -1322813120
+      spriteID: c964e06830b5fda4aa289c0c6f0b7ae5
+      internalID: -399789821
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_1
+      name: wall land 48x48_1
       rect:
         serializedVersion: 2
         x: 48
@@ -158,14 +158,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e4d28c701641fa479ee4a89ccfd43e6
-      internalID: -1745537097
+      spriteID: 697b9c3a01577d545b931e78e2a8e3f1
+      internalID: -904493047
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_2
+      name: wall land 48x48_2
       rect:
         serializedVersion: 2
         x: 96
@@ -179,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1e31784a958aba4480c9e03250659ea
-      internalID: 2057777050
+      spriteID: deec7bc155f5db04f98812964530c7d5
+      internalID: -174220349
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_3
+      name: wall land 48x48_3
       rect:
         serializedVersion: 2
         x: 144
@@ -200,14 +200,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f34d09247ab5994e90837abe6416f71
-      internalID: 977663937
+      spriteID: 0fe5b6be9594ef5439b86e5044982b2d
+      internalID: -1537490998
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_4
+      name: wall land 48x48_4
       rect:
         serializedVersion: 2
         x: 192
@@ -221,14 +221,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1f88f965c9477d41b2081be335bd425
-      internalID: 962714164
+      spriteID: 1d4bac51b9663574abcd617ce33d7c57
+      internalID: -1018926118
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_5
+      name: wall land 48x48_5
       rect:
         serializedVersion: 2
         x: 240
@@ -242,92 +242,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69006f1b3673fdd4f961ea52d8dc0eed
-      internalID: -704228989
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Character Idle 48x48_6
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a1ba5f5cd738b7c4386862f40bb05994
-      internalID: -367813296
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Character Idle 48x48_7
-      rect:
-        serializedVersion: 2
-        x: 336
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 137b3e68c8f981846869ed3a0aab8abd
-      internalID: 549425503
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Character Idle 48x48_8
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ae840ff63f0809e47bd2a0fae9e4e4ef
-      internalID: 1326854524
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Character Idle 48x48_9
-      rect:
-        serializedVersion: 2
-        x: 432
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c32dbc6d8a53d03489ed00f106718dce
-      internalID: -309555908
+      spriteID: d2177746d3980da4d8ef0dc528a75033
+      internalID: 1317572311
       vertices: []
       indices: 
       edges: []
@@ -343,16 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Character Idle 48x48_0: -1322813120
-      Character Idle 48x48_1: -1745537097
-      Character Idle 48x48_2: 2057777050
-      Character Idle 48x48_3: 977663937
-      Character Idle 48x48_4: 962714164
-      Character Idle 48x48_5: -704228989
-      Character Idle 48x48_6: -367813296
-      Character Idle 48x48_7: 549425503
-      Character Idle 48x48_8: 1326854524
-      Character Idle 48x48_9: -309555908
+      wall land 48x48_0: -399789821
+      wall land 48x48_1: -904493047
+      wall land 48x48_2: -174220349
+      wall land 48x48_3: -1537490998
+      wall land 48x48_4: -1018926118
+      wall land 48x48_5: 1317572311
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

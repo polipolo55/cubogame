@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 93192a0b48a74af44a55c5e2cbca1d7d
+guid: dcff15e8b9f40b04187cb1b02cd18bc1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -70,9 +70,9 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
-    resizeAlgorithm: 0
+    resizeAlgorithm: 1
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Character Idle 48x48_0
+      name: player land 48x48_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +137,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 741a4e70e740c7442874ae2c70780979
-      internalID: -1322813120
+      spriteID: 55cc644cca2ea594e86f2a0602090eef
+      internalID: -1898655029
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_1
+      name: player land 48x48_1
       rect:
         serializedVersion: 2
         x: 48
@@ -158,14 +158,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e4d28c701641fa479ee4a89ccfd43e6
-      internalID: -1745537097
+      spriteID: 978fcfff641fdf64d8a77702e20260f1
+      internalID: 1824331308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_2
+      name: player land 48x48_2
       rect:
         serializedVersion: 2
         x: 96
@@ -179,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1e31784a958aba4480c9e03250659ea
-      internalID: 2057777050
+      spriteID: bc25114eb92153149835017a7eb67dd3
+      internalID: 1421614862
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_3
+      name: player land 48x48_3
       rect:
         serializedVersion: 2
         x: 144
@@ -200,14 +200,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f34d09247ab5994e90837abe6416f71
-      internalID: 977663937
+      spriteID: 68dfe81352c4b6743a00c93d567d0436
+      internalID: -2016187591
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_4
+      name: player land 48x48_4
       rect:
         serializedVersion: 2
         x: 192
@@ -221,14 +221,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1f88f965c9477d41b2081be335bd425
-      internalID: 962714164
+      spriteID: c8dbc6d021cfb0743895c3992f753ddc
+      internalID: 698543043
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_5
+      name: player land 48x48_5
       rect:
         serializedVersion: 2
         x: 240
@@ -242,14 +242,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69006f1b3673fdd4f961ea52d8dc0eed
-      internalID: -704228989
+      spriteID: 85703d64f8289a4468a7fbaa2939a8da
+      internalID: -1117361349
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_6
+      name: player land 48x48_6
       rect:
         serializedVersion: 2
         x: 288
@@ -263,14 +263,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a1ba5f5cd738b7c4386862f40bb05994
-      internalID: -367813296
+      spriteID: 156094b2d2db6784b9d121e418807d58
+      internalID: -1421929362
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_7
+      name: player land 48x48_7
       rect:
         serializedVersion: 2
         x: 336
@@ -284,14 +284,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 137b3e68c8f981846869ed3a0aab8abd
-      internalID: 549425503
+      spriteID: 1a4c998a42bfbe142b73d6399ed06775
+      internalID: -196757390
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Character Idle 48x48_8
+      name: player land 48x48_8
       rect:
         serializedVersion: 2
         x: 384
@@ -305,29 +305,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae840ff63f0809e47bd2a0fae9e4e4ef
-      internalID: 1326854524
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Character Idle 48x48_9
-      rect:
-        serializedVersion: 2
-        x: 432
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c32dbc6d8a53d03489ed00f106718dce
-      internalID: -309555908
+      spriteID: d2dcc4303f7e787418cfbe3ad190d59c
+      internalID: -699075254
       vertices: []
       indices: 
       edges: []
@@ -343,16 +322,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Character Idle 48x48_0: -1322813120
-      Character Idle 48x48_1: -1745537097
-      Character Idle 48x48_2: 2057777050
-      Character Idle 48x48_3: 977663937
-      Character Idle 48x48_4: 962714164
-      Character Idle 48x48_5: -704228989
-      Character Idle 48x48_6: -367813296
-      Character Idle 48x48_7: 549425503
-      Character Idle 48x48_8: 1326854524
-      Character Idle 48x48_9: -309555908
+      player land 48x48_0: -1898655029
+      player land 48x48_1: 1824331308
+      player land 48x48_2: 1421614862
+      player land 48x48_3: -2016187591
+      player land 48x48_4: 698543043
+      player land 48x48_5: -1117361349
+      player land 48x48_6: -1421929362
+      player land 48x48_7: -196757390
+      player land 48x48_8: -699075254
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
