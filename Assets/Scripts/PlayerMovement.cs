@@ -79,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 lastDashDir;
     private bool isDashingStarting;
 
+    [Range(0f, 1f)] public float grabWallGravMult;
+
     [Header("assits")]
     [Range(0.01f, 0.5f)] public float coyoteTime; //temps despres de plataforma
     [Range(0.01f, 0.5f)] public float jumpInputBufferTime; 
@@ -102,6 +104,9 @@ public class PlayerMovement : MonoBehaviour
     public float lastOnWallTime { get; private set; }
     public float lastOnWallRightTime { get; private set; }
     public float lastOnWallLeftTime { get; private set; }
+
+    public bool onRightWall { get; private set; }
+    public bool onLeftWall { get; private set; }
 
     //Jump
     private bool _isJumpCut;
@@ -227,13 +232,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDashing && !isJumping)
         {
-            if (Physics2D.OverlapBox(groundPoint.position, groundCheckSize, 0, floor) && !isJumping) lastOnGroundTime = coyoteTime; 
+            if (Physics2D.OverlapBox(groundPoint.position, groundCheckSize, 0, floor) && !isJumping) lastOnGroundTime = coyoteTime;
 
             if (((Physics2D.OverlapBox(rightPoint.position, wallCheckSize, 0, floor) && isFacingRight) || (Physics2D.OverlapBox(leftPoint.position, wallCheckSize, 0, floor) && !isFacingRight)) && !isWallJumping)
+            {
                 lastOnWallRightTime = coyoteTime;
-
+                onRightWall = true;
+            }
+            else onRightWall = false;
             if (((Physics2D.OverlapBox(rightPoint.position, wallCheckSize, 0, floor) && !isFacingRight) || (Physics2D.OverlapBox(leftPoint.position, wallCheckSize, 0, floor) && isFacingRight)) && !isWallJumping)
+            { 
                 lastOnWallLeftTime = coyoteTime;
+                CheckDirectionToFace(false);
+            } onLeftWall = false;
 
             lastOnWallTime = Mathf.Max(lastOnWallLeftTime, lastOnWallRightTime);
         }
@@ -320,6 +331,10 @@ public class PlayerMovement : MonoBehaviour
             if (isSliding)
             {
                 SetGravityTo(0);
+            }
+            else if (!isJumping && (lastOnWallLeftTime > 0f || lastOnWallRightTime > 0f))
+            {
+                SetGravityTo(gravityScale * grabWallGravMult);
             }
             else if (_isJumpCut)
             {
