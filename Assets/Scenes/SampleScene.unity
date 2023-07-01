@@ -298,33 +298,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb0fb2f7d7b85a44816f03dc68cd949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 80628786}
+  fallGravityMult: 1.3
+  maxFallSpeed: 25
+  runMaxSpeed: 13
+  runAccel: 2.5
+  runDecceleration: 2.5
+  AirAccel: 0.8
+  Airdeccel: 0.65
+  doConserveMomentum: 1
+  jumpHeight: 8
+  jumpTimeToApex: 0.5
+  jumpCutGravityMult: 2
+  jumpHangGravityMult: 0.5
+  jumpHangTimeThreshold: 1
+  jumpHangAccelerationMult: 1.1
+  jumpHangMaxSpeedMult: 1.3
+  wallJumpForce: {x: 20, y: 35}
+  wallJumpRunLerp: 0.8
+  wallJumpTime: 0.1
+  doTurnOnWallJump: 1
+  coyoteTime: 0.2
+  jumpInputBufferTime: 0.2
   groundPoint: {fileID: 1569985798}
-  leftPoint: {fileID: 1896431412}
+  groundCheckSize: {x: 0.49, y: 0.05}
   rightPoint: {fileID: 797222000}
-  moveSpeed: 11
-  acceleration: 13
-  deceleration: 13
-  velPower: 0.96
-  jumpForce: 18
-  fallGravMultiplyer: 2.5
-  jumpBufferTime: 0.2
-  cutForce: 1.5
-  frictionEnabled: 1
-  frictionMult: 0.95
-  dashAmount: 8
-  dashCD: 0.8
-  freezeAmountDash: 0.2
-  numberOfJumps: 2
-  accelAir: 0.65
-  deccelAir: 0.65
+  leftPoint: {fileID: 1896431412}
+  wallCheckSize: {x: 0.35, y: 1}
   floor:
     serializedVersion: 2
     m_Bits: 64
-  freezeTime: 0
-  isJumping: 0
-  isFrozen: 0
-  canDash: 0
 --- !u!114 &80628788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +372,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 80628787}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: VerticalMove
+        m_MethodName: JumpMove
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -398,6 +400,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 328a4fc8-52bb-43fe-9bb1-a7aad6321b94
     m_ActionName: Movement/Dash[/Keyboard/l,/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 80628787}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: VerticalMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 951ccd47-d3e7-41cc-8768-b23bfedd40ef
+    m_ActionName: Movement/Vertical[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Movement

@@ -6,331 +6,393 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //variables to tweak
 
-    [Header("components")]
-    public Rigidbody2D rb;
-    public Transform groundPoint;
-    public Transform leftPoint;
-    public Transform rightPoint;
-
-
+    [Header("gravetat")]
+    private float gravityStrength; 
+    private float gravityScale; 
     [Space(5)]
+    public float fallGravityMult; //mult al caure d'un salt
+    public float maxFallSpeed;
 
-    [Header("publiques")]
-    public float moveSpeed;
-    public float acceleration;
-    public float deceleration;
-    public float velPower;
-    public float jumpForce;
-    public float fallGravMultiplyer;
-    public float jumpBufferTime;
-    public float cutForce;
-    public bool frictionEnabled;
-    public float frictionMult;
-    public float dashAmount;
-    public float dashCD;
-    public float freezeAmountDash;
-    public int numberOfJumps;
-    [Range(0f, 1)] public float accelAir;
-    [Range(0f, 1)] public float deccelAir;
+    [Space(20)]
 
-
-    private Vector2 groundCheckSize = new Vector2(0.49f, 0.05f);
-    private Vector2 wallCheckSize = new Vector2(0.35f, 1f);
-    public LayerMask floor;
-
+    [Header("run")]
+    public float runMaxSpeed; 
+    public float runAccel; 
+    private float runAccelAmount; // força aplicada al jugador
+    public float runDecceleration; 
+    private float runDeccelAmount; 
     [Space(5)]
+    [Range(0f, 1)] public float AirAccel; 
+    [Range(0f, 1)] public float Airdeccel;
+    [Space(5)]
+    public bool doConserveMomentum = true;
+
+    [Space(20)]
+
+    [Header("jump")]
+    public float jumpHeight; 
+    public float jumpTimeToApex; 
+    private float jumpForce; 
+
+    public float jumpCutGravityMult; 
+    [Range(0f, 1)] public float jumpHangGravityMult; 
+    public float jumpHangTimeThreshold; 
+    public float jumpHangAccelerationMult;
+    public float jumpHangMaxSpeedMult;
+
+    [Header("walljump")]
+    public Vector2 wallJumpForce; 
+    [Space(5)]
+    [Range(0f, 1f)] public float wallJumpRunLerp; 
+    [Range(0f, 1.5f)] public float wallJumpTime; 
+    public bool doTurnOnWallJump; 
+
+    [Space(10)]
+
+    [Header("Slide")]
+    //public float slideSpeed;
+    //public float slideAccel;
+
+    [Header("assits")]
+    [Range(0.01f, 0.5f)] public float coyoteTime; //temps despres de plataforma
+    [Range(0.01f, 0.5f)] public float jumpInputBufferTime; 
 
 
-    [Header("debugging")]
+    //Toxicity - SOAD 
+
+    //Components
+    public Rigidbody2D rb { get; private set; }
+
+
+    public bool isFacingRight { get; private set; }
+    public bool isJumping { get; private set; }
+    public bool isWallJumping { get; private set; }
+    public bool isSliding { get; private set; }
+
     
-    private float jumpInput;
-    private float moveInput;
-    private float dashInput;
+    private float lastOnGroundTime;
+    private float lastOnWallTime;
+    private float lastOnWallRightTime;
+    private float lastOnWallLeftTime;
 
+    //Jump
+    private bool _isJumpCut;
+    private bool _isJumpFalling;
 
-    private float lastGroundTime;
-    private float lastJumpTime;
-    private float lastDashTime;
-    public float freezeTime;
+    //Wall Jump
+    private float _wallJumpStartTime;
+    private int _lastWallJumpDir;
 
+    private Vector2 moveInput;
+    public float lastPressedJumpTime { get; private set; }
 
-    private float dashTime;
+    //Casiopea - Galactic Funk
 
-    private float gravityScale;
+    [SerializeField] private Transform groundPoint;
 
+    [SerializeField] private Vector2 groundCheckSize = new Vector2(0.49f, 0.03f);
 
-    private bool isGrounded;
-    public bool isJumping;
-    private bool isDashing;
-    public bool isFrozen;
+    [Space(5)]
+    [SerializeField] private Transform rightPoint;
+    [SerializeField] private Transform leftPoint;
+    [SerializeField] private Vector2 wallCheckSize = new Vector2(0.5f, 1f);
 
-    private bool canJump;
-    public bool canDash;
+    [SerializeField] private LayerMask floor;
 
-    private float accelRate;
-    private Vector2 lastVel;
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        gravityScale = rb.gravityScale;
-        canDash = true;
+        rb = GetComponent<Rigidbody2D>();
+
 
     }
+    private void Start()
+    {
 
-    // Update is called once per frame
+        //the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices the voices 
+        gravityStrength = -(2 * jumpHeight) / (jumpTimeToApex * jumpTimeToApex);
+        gravityScale = gravityStrength / Physics2D.gravity.y;
+        runAccelAmount = (50 * runAccel) / runMaxSpeed;
+        runDeccelAmount = (50 * runDecceleration) / runMaxSpeed;
+        jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
 
+        #region Variable Ranges
+        runAccel = Mathf.Clamp(runAccel, 0.01f, runMaxSpeed);
+        runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
+        #endregion
+
+        SetGravityTo(gravityScale);
+        isFacingRight = true;
+
+    }
     private void Update()
     {
+        Timers();
 
-        /*float timer = 2f;
+        Collisions();
 
-        if (timer > 0f)
-        {
-            timer -= Time.deltaTime;
-            if (timer < 0f) { 
-                timer = 0f;
-                canDash = true;
-            }
-        }
+        JumpComprovations();
 
-        
-         {
-            canDash = false;
-            timer = time;
-        }
-         */
+        //aqui es comprovaria si pot dashear i fer slide
 
-        lastGroundTime -= Time.deltaTime;
-        lastDashTime -= Time.deltaTime;
-        dashTime -= Time.deltaTime;
-        lastJumpTime -= Time.deltaTime;
-        freezeTime -= Time.deltaTime;
-
-        if (isDashing)
-        {
-            if (dashTime > 0f) whileDashing();
-            else finishedDashing();
-        }
-
-        if (lastDashTime > 0f) canDash = false;
-        else canDash = true;
-
-        if (freezeTime > 0) isFrozen = true;
-        else if (isFrozen == true)
-        {
-            rb.velocity = lastVel;
-            isFrozen = false;
-        }
-        
-        if (!isJumping)
-        {
-            isGrounded = Physics2D.OverlapBox(groundPoint.position, groundCheckSize, 0, floor);
-
-        }
-
-        
-        /*
-        if (lastGroundTime > 0f)
-        {
-            lastGroundTime -= Time.deltaTime;
-
-            if (lastGroundTime < 0f)
-            {
-                lastGroundTime = 0f;
-
-            }
-
-        }
-        if (lastJumpTime > 0f)
-        {
-            lastJumpTime -= Time.deltaTime;
-
-            if (lastJumpTime < 0f)
-            {
-                lastJumpTime = 0f;
-
-            }
-
-        }
-        if (dashTime > 0f)
-        {
-            dashTime -= Time.deltaTime;
-            if (isDashing) whileDashing();
-
-            if (dashTime < 0f)
-            {
-                if (isDashing) finishedDashing();
-                dashTime = 0f;
-            }
-        }
-
-        if (lastDashTime > 0f) 
-        {
-            canDash = false;
-            lastDashTime -= Time.deltaTime;
-            if (lastDashTime < 0f)
-            {
-                lastDashTime = 0f;
-                if (!isDashing && isGrounded) canDash = true;
-                else lastDashTime = 0.1f;
-            }
-        } 
-       
-        if (freezeTime > 0f)
-        {
-            isFrozen = true;
-            freezeTime -= Time.deltaTime;
-            if (freezeTime < 0f)
-            {
-                rb.velocity = lastVel;
-                isFrozen = false;
-                freezeTime = 0f;
-            }
-        }
-        
-        */
-
-
-
-        if (lastGroundTime > 0f && lastJumpTime > 0f && !isJumping) canJump = true;
-        else canJump = false;
-
+        GravityHandling();
 
 
     }
-    void FixedUpdate()
+
+    private void FixedUpdate()
     {
- 
-        float targetSpeed = moveInput * moveSpeed;
-        float speedDif = targetSpeed - rb.velocity.x;
-        if (isGrounded) accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
-        else accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration*accelAir : deceleration * deccelAir;
-        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
-
-
-        if (!isDashing || !isFrozen) rb.AddForce(movement * Vector2.right);
-
-
-
-
-        
-
-
-        if (isGrounded)
-        {
-            lastGroundTime = jumpBufferTime;
-            isJumping = false;
-            //canDash = true;
-        }
-
-        if (canJump) 
-        {
-            Jump();
-        }
-
-        if (jumpInput == 0 && isJumping)
-        {
-            whileJumping();
-        }
-
-
-        if (canDash && dashInput == 1 && moveInput != 0)
-        {
-            Dash();
-        }
-
-        
-        if (lastGroundTime > 0 && Mathf.Abs(moveInput) < 0.01f && frictionEnabled)
-        {
-            float frictionAmout = Mathf.Min(Mathf.Abs(rb.velocity.x), frictionMult);
-
-            frictionAmout *= Mathf.Sign(rb.velocity.x);
-
-            rb.AddForce(Vector2.right * -frictionAmout, ForceMode2D.Impulse);
-        }
-
-        if (isFrozen)
-        {
-            rb.velocity = Vector2.zero;
-            rb.gravityScale = 0;
-        }
+        if (isWallJumping)
+            Run(wallJumpRunLerp);
         else
-        {
+            Run(1);
 
-            if (rb.velocity.y < 0.01f && !isDashing)
-            {
-                rb.gravityScale = gravityScale * fallGravMultiplyer;
-                isJumping = false;
-            }
-            else if (!isDashing) rb.gravityScale = gravityScale;
-        }
+       // aqui shauria de posar el slide a part
     }
 
     public void HorizontalMove(InputAction.CallbackContext ctx)
     {
-        moveInput = ctx.ReadValue<float>();
+        moveInput.x = ctx.ReadValue<float>();
+        if(moveInput.x != 0) CheckDirectionToFace(moveInput.x > 0);
+        Debug.Log(moveInput.x);
     }
 
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
-        jumpInput = ctx.ReadValue<float>();
-        lastJumpTime = jumpBufferTime;
+        moveInput.y = ctx.ReadValue<float>();
+        Debug.Log(moveInput.y);
+    }
+    public void JumpMove(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            OnJumpInput();
+            Debug.Log("jump");
+        } else if (ctx.canceled)
+        {
+            OnJumpRelease();
+            Debug.Log("stopped jump");
+        }
     }
     public void DashMove(InputAction.CallbackContext ctx)
     {
-        dashInput = ctx.ReadValue<float>();
+        //dashInput = ctx.ReadValue<float>();
     }
 
 
+    public void SetGravityTo(float amount)
+    {
+        rb.gravityScale = amount;
+    }
+
+    private void Collisions()
+    {
+        if (!isJumping)
+        {
+            if (Physics2D.OverlapBox(groundPoint.position, groundCheckSize, 0, floor) && !isJumping) lastOnGroundTime = coyoteTime; 
+
+            if (((Physics2D.OverlapBox(rightPoint.position, wallCheckSize, 0, floor) && isFacingRight) || (Physics2D.OverlapBox(leftPoint.position, wallCheckSize, 0, floor) && !isFacingRight)) && !isWallJumping)
+                lastOnWallRightTime = coyoteTime;
+
+            if (((Physics2D.OverlapBox(rightPoint.position, wallCheckSize, 0, floor) && !isFacingRight) || (Physics2D.OverlapBox(leftPoint.position, wallCheckSize, 0, floor) && isFacingRight)) && !isWallJumping)
+                lastOnWallLeftTime = coyoteTime;
+
+            lastOnWallTime = Mathf.Max(lastOnWallLeftTime, lastOnWallRightTime);
+        }
+    }
+
+    private void Timers()
+    {
+        lastOnGroundTime -= Time.deltaTime;
+        lastOnWallTime -= Time.deltaTime;
+        lastOnWallRightTime -= Time.deltaTime;
+        lastOnWallLeftTime -= Time.deltaTime;
+        lastPressedJumpTime -= Time.deltaTime;
+    }
+    private void JumpComprovations()
+    {
+        if (isJumping && rb.velocity.y < 0)
+        {
+            isJumping = false;
+
+            if (!isWallJumping)
+                _isJumpFalling = true;
+        }
+
+        if (isWallJumping && Time.time - _wallJumpStartTime > wallJumpTime)
+        {
+            isWallJumping = false;
+        }
+
+        if (lastOnGroundTime > 0 && !isJumping && !isWallJumping)
+        {
+            _isJumpCut = false;
+
+            if (!isJumping)
+                _isJumpFalling = false;
+        }
+
+        //jump
+        if (CanJump() && lastPressedJumpTime > 0)
+        {
+            isJumping = true;
+            isWallJumping = false;
+            _isJumpCut = false;
+            _isJumpFalling = false;
+            Jump();
+        }
+        //walljump
+        else if (CanWallJump() && lastPressedJumpTime > 0)
+        {
+            isWallJumping = true;
+            isJumping = false;
+            _isJumpCut = false;
+            _isJumpFalling = false;
+            _wallJumpStartTime = Time.time;
+            _lastWallJumpDir = (lastOnWallRightTime > 0) ? -1 : 1;
+
+            WallJump(_lastWallJumpDir);
+        }
+    }
+    private void GravityHandling() 
+    {
+        //Just the way you are - Masayoshi Takanaka
+        if (isSliding)
+        {
+            SetGravityTo(0);
+        }
+        else if (_isJumpCut)
+        {
+            SetGravityTo(gravityScale * jumpCutGravityMult);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+
+        }
+        else if ((isJumping || isWallJumping || _isJumpFalling) && Mathf.Abs(rb.velocity.y) < jumpHangTimeThreshold)
+        {
+            SetGravityTo(gravityScale * jumpHangGravityMult);
+        }
+        else if (rb.velocity.y < 0)
+        {
+            SetGravityTo(gravityScale * fallGravityMult);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+        }
+        else
+        {
+            SetGravityTo(gravityScale);
+        }
+    }
+
+    public void OnJumpInput()
+    {
+        lastPressedJumpTime = jumpInputBufferTime;
+    }
+
+    public void OnJumpRelease()
+    {
+        if (CanJumpCut() || CanWallJumpCut())
+            _isJumpCut = true;
+    }
+
+
+    private void Turn()
+    {
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+
+        isFacingRight = !isFacingRight;
+    }
+
+    //moviment, aquesta part es conserva del script original pero incorpora lerp per smoothing;
+
+    private void Run(float lerp)
+    {
+        float targetSpeed = moveInput.x * runMaxSpeed;
+        targetSpeed = Mathf.Lerp(rb.velocity.x, targetSpeed, lerp);
+
+        float accelRate;
+
+        if (lastOnGroundTime > 0) accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? runAccelAmount : runDeccelAmount;
+        else accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? runAccelAmount * AirAccel : runDeccelAmount * Airdeccel;
+
+        //el script bo fa aqui una implementacio de mes acceleracio en el apex del jump, la podriem posar pero mes endevant
+
+        if (doConserveMomentum && Mathf.Abs(rb.velocity.x) > Mathf.Abs(targetSpeed) && Mathf.Sign(rb.velocity.x) == Mathf.Sign(targetSpeed) && Mathf.Abs(targetSpeed) > 0.01f && lastOnGroundTime < 0)
+        {
+            accelRate = 0;
+        }
+
+        float speedDif = targetSpeed - rb.velocity.x;
+
+        float movement = speedDif * accelRate;
+
+        rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+
+    }
 
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-        lastJumpTime = -1f;
-        lastGroundTime = -1f;
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        isJumping = true;
+        lastPressedJumpTime = 0;
+        lastOnGroundTime = 0;
 
+        float force = jumpForce;
+        if (rb.velocity.y < 0) force -=rb.velocity.y; //en comtpes de fer vel.y = 0 fem li restem la força en negatiu
+
+        rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
 
     }
 
-    private void Dash()
+    private void WallJump(int dir)
     {
-        lastVel = new Vector2(rb.velocity.x, 0);
-        rb.velocity = Vector2.zero; 
-        dashTime = dashAmount * 0.015f;
-        isDashing = true;
-        rb.AddForce(Vector2.right * dashAmount * 8 * moveInput, ForceMode2D.Impulse);
-        canDash = false;    }
+        lastPressedJumpTime = 0;
+        lastOnGroundTime = 0;
+        lastOnWallRightTime = 0;
+        lastOnWallLeftTime = 0;
 
-    private void whileDashing()
+        Vector2 force = new Vector2(wallJumpForce.x, wallJumpForce.y);
+        force.x *= dir;
+
+        if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
+            force.x -= rb.velocity.x;
+
+        if(rb.velocity.y < 0)
+            force.y -= rb.velocity.y;
+        rb.AddForce(force, ForceMode2D.Impulse);
+    }   
+
+    //condocions fetes be =)
+
+    public void CheckDirectionToFace(bool isMovingRight)
     {
-        rb.gravityScale = 0f;
+        if (isMovingRight != isFacingRight)
+            Turn();
     }
-
-    private void finishedDashing()
-    {   
-        freezeTime = freezeAmountDash;
-        lastDashTime = dashCD;
-        rb.gravityScale = gravityScale;
-        isDashing = false;
-    }
-
-    private void whileJumping()
+    private bool CanJump()
     {
-        if (rb.velocity.y > 0 && isJumping)
-        {
-            rb.AddForce(Vector2.down * rb.velocity.y * cutForce, ForceMode2D.Impulse);
-        } 
-        else if( rb.velocity.y < 0 && isJumping)
-        {
-            isJumping = false;
-        }
+        return lastOnGroundTime > 0 && !isJumping;
     }
+
+    private bool CanWallJump()
+    {
+        return lastPressedJumpTime > 0 && lastOnWallTime > 0 && lastOnGroundTime <= 0 && (!isWallJumping ||
+             (lastOnWallRightTime > 0 && _lastWallJumpDir == 1) || (lastOnWallLeftTime > 0 && _lastWallJumpDir == -1));
+    }
+
+    private bool CanJumpCut()
+    {
+        return isJumping && rb.velocity.y > 0;
+    }
+
+    private bool CanWallJumpCut()
+    {
+        return isWallJumping && rb.velocity.y > 0;
+    }
+
+
+
+
 
     private void OnDrawGizmosSelected()
     {
