@@ -155,28 +155,6 @@
                 },
                 {
                     "name": "negative",
-                    "id": "3500b5c3-c35b-49a0-bca6-92750a866ee8",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "negative",
-                    "id": "f22bdca5-b75e-4433-bc70-6aef2e376a21",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
                     "id": "d3a22945-ce63-45a0-b469-eec2a843a1b1",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -187,9 +165,31 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "negative",
                     "id": "f7d02a10-08d0-4d87-b32a-f22451913809",
                     "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "3500b5c3-c35b-49a0-bca6-92750a866ee8",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "f22bdca5-b75e-4433-bc70-6aef2e376a21",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

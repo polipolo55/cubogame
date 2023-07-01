@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [Space(5)]
     public float fallGravityMult; //mult al caure d'un salt
     public float maxFallSpeed;
+
+    public float frictionAmount;
 
     [Space(20)]
 
@@ -51,9 +54,28 @@ public class PlayerMovement : MonoBehaviour
 
     [Space(10)]
 
-    [Header("Slide")]
     //public float slideSpeed;
     //public float slideAccel;
+
+
+    public int dashAmount;
+    public float dashSpeed;
+    public float dashSleepTime; 
+    public float dashStartTime;
+    [Space(5)]
+    public float dashEndTime; 
+    public Vector2 dashEndSpeed; 
+    [Range(0f, 1f)] public float dashEndRunLerp; 
+    [Space(5)]
+    public float dashRefillTime;
+    [Space(5)]
+    [Range(0.01f, 0.5f)] public float dashInputBufferTime;
+
+
+    private int dashesLeft;
+    private bool dashRefilling;
+    private Vector2 lastDashDir;
+    private bool isDashingStarting;
 
     [Header("assits")]
     [Range(0.01f, 0.5f)] public float coyoteTime; //temps despres de plataforma
@@ -70,12 +92,14 @@ public class PlayerMovement : MonoBehaviour
     public bool isJumping { get; private set; }
     public bool isWallJumping { get; private set; }
     public bool isSliding { get; private set; }
+    public bool isDashing { get; private set; }
 
-    [Header("Degub")]
-    public float lastOnGroundTime;
-    public float lastOnWallTime;
-    public float lastOnWallRightTime;
-    public float lastOnWallLeftTime;
+
+
+    public float lastOnGroundTime { get; private set; }
+    public float lastOnWallTime { get; private set; }
+    public float lastOnWallRightTime { get; private set; }
+    public float lastOnWallLeftTime { get; private set; }
 
     //Jump
     private bool _isJumpCut;
@@ -87,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 moveInput;
     public float lastPressedJumpTime { get; private set; }
+    public float lastPressedDashTime { get; private set; }
 
     //Casiopea - Galactic Funk
 
@@ -104,7 +129,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-
     }
     private void Start()
     {
@@ -118,10 +142,8 @@ public class PlayerMovement : MonoBehaviour
 
         wallCheckSize = new Vector2(0.5f, 0.9f * transform.localScale.y);
 
-        #region Variable Ranges
         runAccel = Mathf.Clamp(runAccel, 0.01f, runMaxSpeed);
         runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
-        #endregion
 
         SetGravityTo(gravityScale);
         isFacingRight = true;
@@ -133,22 +155,31 @@ public class PlayerMovement : MonoBehaviour
 
         Collisions();
 
-        JumpComprovations();
+        Comprovations();
 
         //aqui es comprovaria si pot dashear i fer slide
 
         GravityHandling();
+
+        Friction();
 
 
     }
 
     private void FixedUpdate()
     {
+        if (!isDashing)
+        {
 
-        if (isWallJumping)
-            Run(wallJumpRunLerp);
-        else
-            Run(1);
+            if (isWallJumping)
+                Run(wallJumpRunLerp);
+            else
+                Run(1);
+        }
+        else if (isDashingStarting)
+        {
+            Run(dashEndRunLerp);
+        }
 
        // aqui shauria de posar el slide a part
     }
@@ -159,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
         if(moveInput.x != 0) CheckDirectionToFace(moveInput.x > 0);
         Debug.Log(moveInput.x);
     }
-
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
         moveInput.y = ctx.ReadValue<float>();
@@ -179,7 +209,10 @@ public class PlayerMovement : MonoBehaviour
     }
     public void DashMove(InputAction.CallbackContext ctx)
     {
-        //dashInput = ctx.ReadValue<float>();
+        if (ctx.started)
+        {
+            OnDashInput();
+        }
     }
 
 
@@ -190,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Collisions()
     {
-        if (!isJumping)
+        if (!isDashing && !isJumping)
         {
             if (Physics2D.OverlapBox(groundPoint.position, groundCheckSize, 0, floor) && !isJumping) lastOnGroundTime = coyoteTime; 
 
@@ -210,9 +243,11 @@ public class PlayerMovement : MonoBehaviour
         lastOnWallTime -= Time.deltaTime;
         lastOnWallRightTime -= Time.deltaTime;
         lastOnWallLeftTime -= Time.deltaTime;
+
         lastPressedJumpTime -= Time.deltaTime;
+        lastPressedDashTime -= Time.deltaTime;
     }
-    private void JumpComprovations()
+    private void Comprovations()
     {
         if (isJumping && rb.velocity.y < 0)
         {
@@ -234,60 +269,100 @@ public class PlayerMovement : MonoBehaviour
             if (!isJumping)
                 _isJumpFalling = false;
         }
-
-        //jump
-        if (CanJump() && lastPressedJumpTime > 0)
+        if (!isDashing)
         {
-            isJumping = true;
+            //jump
+            if (CanJump() && lastPressedJumpTime > 0)
+            {
+                isJumping = true;
+                isWallJumping = false;
+                _isJumpCut = false;
+                _isJumpFalling = false;
+                Jump();
+            }
+            //walljump
+            else if (CanWallJump() && lastPressedJumpTime > 0)
+            {
+                isWallJumping = true;
+                isJumping = false;
+                _isJumpCut = false;
+                _isJumpFalling = false;
+                _wallJumpStartTime = Time.time;
+                _lastWallJumpDir = (lastOnWallRightTime > 0) ? -1 : 1;
+
+                WallJump(_lastWallJumpDir);
+            }
+        }
+
+        if (CanDash() && lastPressedDashTime > 0)
+        {
+            Sleep(dashSleepTime);
+            if (moveInput != Vector2.zero) lastDashDir = moveInput;
+            else lastDashDir = isFacingRight ? Vector2.right : Vector2.left;
+
+            isDashing = true;
+            isJumping = false;
             isWallJumping = false;
             _isJumpCut = false;
-            _isJumpFalling = false;
-            Jump();
-        }
-        //walljump
-        else if (CanWallJump() && lastPressedJumpTime > 0)
-        {
-            isWallJumping = true;
-            isJumping = false;
-            _isJumpCut = false;
-            _isJumpFalling = false;
-            _wallJumpStartTime = Time.time;
-            _lastWallJumpDir = (lastOnWallRightTime > 0) ? -1 : 1;
 
-            WallJump(_lastWallJumpDir);
+            StartCoroutine(nameof(StartDash), lastDashDir);
         }
+
     }
-    private void GravityHandling() 
+    private void GravityHandling()
     {
         //Just the way you are - Masayoshi Takanaka
-        if (isSliding)
+
+        if (!isDashingStarting) { 
+
+            if (isSliding)
+            {
+                SetGravityTo(0);
+            }
+            else if (_isJumpCut)
+            {
+                SetGravityTo(gravityScale * jumpCutGravityMult);
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+
+            }
+            else if ((isJumping || isWallJumping || _isJumpFalling) && Mathf.Abs(rb.velocity.y) < jumpHangTimeThreshold)
+            {
+                SetGravityTo(gravityScale * jumpHangGravityMult);
+            }
+            else if (rb.velocity.y < 0)
+            {
+                SetGravityTo(gravityScale * fallGravityMult);
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+            }
+            else
+            {
+                SetGravityTo(gravityScale);
+            }
+        } 
+        else
         {
             SetGravityTo(0);
         }
-        else if (_isJumpCut)
-        {
-            SetGravityTo(gravityScale * jumpCutGravityMult);
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+    }
 
-        }
-        else if ((isJumping || isWallJumping || _isJumpFalling) && Mathf.Abs(rb.velocity.y) < jumpHangTimeThreshold)
+    private void Friction()
+    {
+        if (lastOnGroundTime > 0 && moveInput.x == 0f)
         {
-            SetGravityTo(gravityScale * jumpHangGravityMult);
-        }
-        else if (rb.velocity.y < 0)
-        {
-            SetGravityTo(gravityScale * fallGravityMult);
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
-        }
-        else
-        {
-            SetGravityTo(gravityScale);
+            float amount = Mathf.Min(Mathf.Abs(rb.velocity.x), Mathf.Abs(frictionAmount));
+            amount *= Mathf.Sign(rb.velocity.x);
+            rb.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
         }
     }
 
     public void OnJumpInput()
     {
         lastPressedJumpTime = jumpInputBufferTime;
+    }
+
+    public void OnDashInput()
+    {
+        lastPressedDashTime = dashInputBufferTime;
     }
 
     public void OnJumpRelease()
@@ -305,6 +380,19 @@ public class PlayerMovement : MonoBehaviour
 
         isFacingRight = !isFacingRight;
     }
+
+    private void Sleep(float duration)
+    {
+        StartCoroutine(nameof(doSleep), duration);
+    }
+
+    private IEnumerator doSleep(float duration)
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(duration);
+        Time.timeScale = 1;
+    }
+
 
     //moviment, aquesta part es conserva del script original pero incorpora lerp per smoothing;
 
@@ -343,6 +431,47 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
 
+    }
+
+    private IEnumerator StartDash(Vector2 dir)
+    {
+        lastOnGroundTime = 0;
+        lastPressedDashTime = 0;
+
+        float startTime = Time.time;
+
+        dashesLeft--;
+        isDashingStarting = true;
+
+        SetGravityTo(0);
+
+        while (Time.time - startTime <= dashStartTime)
+        {
+            rb.velocity = dir.normalized * dashSpeed;
+            yield return null;
+        }
+
+        startTime = Time.time;
+
+        isDashingStarting = false;
+
+        SetGravityTo(gravityScale);
+        rb.velocity = dashEndSpeed * dir.normalized;
+
+        while (Time.time - startTime <= dashEndTime)
+        {
+            yield return null;
+        }
+
+        isDashing = false;
+    }
+
+    private IEnumerator RefillDash(int amount)
+    {
+        dashRefilling = true;
+        yield return new WaitForSeconds(dashRefillTime);
+        dashRefilling = false;
+        dashesLeft = Mathf.Min(dashAmount, dashesLeft + 1);
     }
 
     private void WallJump(int dir)
@@ -391,7 +520,15 @@ public class PlayerMovement : MonoBehaviour
         return isWallJumping && rb.velocity.y > 0;
     }
 
+    private bool CanDash()
+    {
+        if (!isDashing && dashesLeft < dashAmount && lastOnGroundTime > 0 && !dashRefilling)
+        {
+            StartCoroutine(nameof(RefillDash), 1);
+        }
 
+        return dashesLeft > 0;
+    }
 
 
 
