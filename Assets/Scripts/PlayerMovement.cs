@@ -10,7 +10,9 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     //variables to tweak
-    
+    [Range(0f, 1f)] public float timeScale;
+
+
     [Header("gravetat")]
     private float gravityStrength; 
     private float gravityScale; 
@@ -52,14 +54,17 @@ public class PlayerMovement : MonoBehaviour
     [Space(5)]
     [Range(0f, 1f)] public float wallJumpRunLerp; 
     [Range(0f, 1.5f)] public float wallJumpTime; 
-    public bool doTurnOnWallJump; 
+    public bool doTurnOnWallJump;
+    public float wallFallSpeed;
+    public float slideAccel;
+
 
     [Space(10)]
 
     //public float slideSpeed;
     //public float slideAccel;
 
-
+    [Header("dash")]
     public int dashAmount;
     public float dashSpeed;
     public float dashSleepTime; 
@@ -83,7 +88,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("assits")]
     [Range(0.01f, 0.5f)] public float coyoteTime; //temps despres de plataforma
-    [Range(0.01f, 0.5f)] public float jumpInputBufferTime; 
+    [Range(0.01f, 0.5f)] public float jumpInputBufferTime;
+    
+
 
 
     //Toxicity - SOAD 
@@ -107,6 +114,10 @@ public class PlayerMovement : MonoBehaviour
 
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
     //Jump
     private bool _isJumpCut;
@@ -115,6 +126,9 @@ public class PlayerMovement : MonoBehaviour
     //Wall Jump
     private float _wallJumpStartTime;
     private int _lastWallJumpDir;
+
+
+    
 
     private Vector2 moveInput;
     public float lastPressedJumpTime { get; private set; }
@@ -131,6 +145,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform leftPoint;    
     [SerializeField] private LayerMask floor;
     public Animator anim;
+
+    [Space(20)]
+    [Header("DEBUG")]
+    public bool onWall;
+    public bool gravityUpdateCheck = true;
 
     private Vector2 wallCheckSize;
 
@@ -160,6 +179,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
+        Time.timeScale = timeScale;
+
         Timers();
 
         Collisions();
@@ -173,6 +194,8 @@ public class PlayerMovement : MonoBehaviour
         Friction();
 
         AnimationHandler();
+
+        
 
 
     }
@@ -190,6 +213,10 @@ public class PlayerMovement : MonoBehaviour
         else if (isDashingStarting)
         {
             Run(dashEndRunLerp);
+        }
+        if (isSliding)
+        {
+            Slide();
         }
 
        // aqui shauria de posar el slide a part
@@ -239,13 +266,31 @@ public class PlayerMovement : MonoBehaviour
                 lastOnWallRightTime = coyoteTime;
                 onRightWall = true;
             }
-            else onRightWall = false;
+            else 
+            {
+                onRightWall = false;
+
+            }
             if (((Physics2D.OverlapBox(rightPoint.position, wallCheckSize, 0, floor) && !isFacingRight) || (Physics2D.OverlapBox(leftPoint.position, wallCheckSize, 0, floor) && isFacingRight)) && !isWallJumping)
-            { 
+            {
                 lastOnWallLeftTime = coyoteTime;
+<<<<<<< Updated upstream
                 CheckDirectionToFace(false);
             } onLeftWall = false;
 
+=======
+                onLeftWall = true;
+                if (moveInput.x <= 0) CheckDirectionToFace(false);
+                else CheckDirectionToFace(true);
+            }
+            else 
+            {
+                onLeftWall = false;
+
+            }
+            if (onRightWall || onLeftWall) onWall = true;
+            else onWall = false;
+>>>>>>> Stashed changes
             lastOnWallTime = Mathf.Max(lastOnWallLeftTime, lastOnWallRightTime);
         }
     }
@@ -320,6 +365,11 @@ public class PlayerMovement : MonoBehaviour
 
             StartCoroutine(nameof(StartDash), lastDashDir);
         }
+        if (CanSlide() && ((lastOnWallLeftTime > 0 && moveInput.x < 0) || (lastOnWallRightTime > 0 && moveInput.x > 0)))
+        {
+            isSliding = true;
+        }
+        else isSliding = false;
 
     }
     private void GravityHandling()
@@ -331,10 +381,6 @@ public class PlayerMovement : MonoBehaviour
             if (isSliding)
             {
                 SetGravityTo(0);
-            }
-            else if (!isJumping && (lastOnWallLeftTime > 0f || lastOnWallRightTime > 0f))
-            {
-                SetGravityTo(gravityScale * grabWallGravMult);
             }
             else if (_isJumpCut)
             {
@@ -452,6 +498,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator StartDash(Vector2 dir)
     {
+        anim.SetTrigger("Dash");
         lastOnGroundTime = 0;
         lastPressedDashTime = 0;
 
@@ -515,6 +562,15 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("speed", Mathf.Abs(speed));
         anim.SetBool("isJumping", isJumping || isWallJumping);
         anim.SetBool("isInAir", lastOnGroundTime != jumpInputBufferTime);
+<<<<<<< Updated upstream
+=======
+        anim.SetFloat("moveDir", moveInput.x);
+        anim.SetBool("isInWall", onWall);
+        anim.SetBool("isFacingRight", isFacingRight);
+        anim.SetBool("isOnRightWall", onRightWall);
+        anim.SetBool("isOnLeftWall", onLeftWall);
+        anim.SetBool("isDashing", isDashing);
+>>>>>>> Stashed changes
     }
 
     //condocions fetes be =)
@@ -523,6 +579,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isMovingRight != isFacingRight)
             Turn();
+    }
+
+    public void Slide()
+    {
+        float speedDif = wallFallSpeed - rb.velocity.y;
+        float movement = speedDif * slideAccel;
+        movement = Mathf.Clamp(movement, -Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime), Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime));
+        rb.AddForce(movement * Vector2.up);
     }
     private bool CanJump()
     {
@@ -547,12 +611,17 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanDash()
     {
-        if (!isDashing && dashesLeft < dashAmount && lastOnGroundTime > 0 && !dashRefilling)
+        if (!isDashing && dashesLeft < dashAmount && (lastOnGroundTime > 0 || lastOnWallTime > 0) && !dashRefilling)
         {
             StartCoroutine(nameof(RefillDash), 1);
         }
 
         return dashesLeft > 0;
+    }
+
+    private bool CanSlide()
+    {
+        return (lastOnWallTime > 0 && !isJumping && !isWallJumping && lastOnGroundTime <= 0);
     }
 
 
