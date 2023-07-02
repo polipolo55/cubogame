@@ -114,10 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 
     //Jump
     private bool _isJumpCut;
@@ -274,23 +271,17 @@ public class PlayerMovement : MonoBehaviour
             if (((Physics2D.OverlapBox(rightPoint.position, wallCheckSize, 0, floor) && !isFacingRight) || (Physics2D.OverlapBox(leftPoint.position, wallCheckSize, 0, floor) && isFacingRight)) && !isWallJumping)
             {
                 lastOnWallLeftTime = coyoteTime;
-<<<<<<< Updated upstream
-                CheckDirectionToFace(false);
-            } onLeftWall = false;
-
-=======
                 onLeftWall = true;
                 if (moveInput.x <= 0) CheckDirectionToFace(false);
                 else CheckDirectionToFace(true);
             }
-            else 
+            else
             {
                 onLeftWall = false;
 
             }
             if (onRightWall || onLeftWall) onWall = true;
             else onWall = false;
->>>>>>> Stashed changes
             lastOnWallTime = Mathf.Max(lastOnWallLeftTime, lastOnWallRightTime);
         }
     }
@@ -562,15 +553,12 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("speed", Mathf.Abs(speed));
         anim.SetBool("isJumping", isJumping || isWallJumping);
         anim.SetBool("isInAir", lastOnGroundTime != jumpInputBufferTime);
-<<<<<<< Updated upstream
-=======
         anim.SetFloat("moveDir", moveInput.x);
         anim.SetBool("isInWall", onWall);
         anim.SetBool("isFacingRight", isFacingRight);
         anim.SetBool("isOnRightWall", onRightWall);
         anim.SetBool("isOnLeftWall", onLeftWall);
         anim.SetBool("isDashing", isDashing);
->>>>>>> Stashed changes
     }
 
     //condocions fetes be =)
