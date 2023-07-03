@@ -598,7 +598,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanDash()
     {
-        if (!isDashing && dashesLeft < dashAmount && (lastOnGroundTime > 0 || lastOnWallTime > 0) && !dashRefilling)
+        if (!isDashing && dashesLeft < dashAmount && lastOnGroundTime > 0 && !dashRefilling)
         {
             StartCoroutine(nameof(RefillDash), 1);
         }
@@ -610,6 +610,8 @@ public class PlayerMovement : MonoBehaviour
     {
         return (lastOnWallTime > 0 && !isJumping && !isWallJumping && lastOnGroundTime <= 0);
     }
+
+
 
 
 
