@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
-using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
