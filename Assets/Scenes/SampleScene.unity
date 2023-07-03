@@ -290,7 +290,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1236,7 +1236,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {r: 3.8107e-41, g: 3.8107e-41, b: 3.8107e-41, a: 3.8107e-41}
   - m_RefCount: 0
-    m_Data: {r: 3.8107e-41, g: 3.8107e-41, b: 3.8107e-41, a: 3.8107e-41}
+    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -50061,6 +50061,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3420539920942515502, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3683514168462868676, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
+      propertyPath: dashSleepTime
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7307357201303241836, guid: 90170b01c555890468c4a1c8a672042d, type: 3}

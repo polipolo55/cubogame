@@ -242,7 +242,7 @@ MonoBehaviour:
   slideAccel: 10
   dashAmount: 1
   dashSpeed: 30
-  dashSleepTime: 0.02
+  dashSleepTime: 0.1
   dashStartTime: 0.2
   dashEndTime: 0.1
   dashEndSpeed: {x: 10, y: 10}
