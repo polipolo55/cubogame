@@ -152,7 +152,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        GameManager.Instance.player = this;
 
     }
     private void Start()
