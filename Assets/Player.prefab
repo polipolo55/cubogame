@@ -4905,7 +4905,7 @@ Transform:
   - {fileID: 1488440191381211076}
   - {fileID: 7772460652253529351}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6418039503724717754
 Rigidbody2D:
@@ -5014,6 +5014,7 @@ MonoBehaviour:
   doTurnOnWallJump: 1
   wallFallSpeed: -5
   slideAccel: 10
+  floorSlideSpeed: 0
   dashAmount: 1
   dashSpeed: 30
   dashSleepTime: 0
@@ -5026,6 +5027,9 @@ MonoBehaviour:
   grabWallGravMult: 0.4
   coyoteTime: 0.1
   jumpInputBufferTime: 0.1
+  groundSlideInputBufferTime: 0.1
+  groundSlideSpeed: 40
+  groundSlideAcc: 10
   groundPoint: {fileID: 8883071157677426415}
   rightPoint: {fileID: 3278958718599709228}
   leftPoint: {fileID: 8152405740650575637}

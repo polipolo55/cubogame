@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
     public static GameManager Instance { get; private set; }
 
     public PlayerMovement player;
+
+    public CameraShake cameraShake;
 
     
 

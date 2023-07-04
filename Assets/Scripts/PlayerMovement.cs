@@ -572,6 +572,10 @@ public class PlayerMovement : MonoBehaviour
 
         timeGroundSliding += Time.time;
 
+        GameManager.Instance.cameraShake.ShakeWithDuration(0.5f);
+
+
+        makeDust();
         Debug.Log("sliding");
 
         rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
