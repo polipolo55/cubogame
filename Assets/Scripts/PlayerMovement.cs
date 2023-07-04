@@ -420,7 +420,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //if (isFacingRight) feetPart.transform.Rotate(new Vector3(0,180,0));
 
-        if (moveInput.x != 0 && lastOnGroundTime > 0f)
+        if (lastOnGroundTime == jumpInputBufferTime)
         {
             feetPart.Play();
             if (isFacingRight)
@@ -435,7 +435,8 @@ public class PlayerMovement : MonoBehaviour
                 psr.flip = new Vector3(1, 0, 0);
             }
         }
-        else feetPart.Pause();
+        else feetPart.Stop();
+ 
     }
 
     public void OnJumpInput()
