@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     public PlayerMovement player;
 
+    public CloudMovement cloud;
+
     
 
     private void Awake()

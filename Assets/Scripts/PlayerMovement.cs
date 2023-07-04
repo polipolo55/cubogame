@@ -155,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
     public ParticleSystemRenderer psr;
 
     private void Awake()
-    {
+    { 
         GameManager.Instance.player = this;
         rb = GetComponent<Rigidbody2D>();
         
