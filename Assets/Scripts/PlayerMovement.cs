@@ -149,10 +149,14 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 wallCheckSize;
 
+    public ParticleSystem feetPart;
+    public ParticleSystemRenderer psr;
+
     private void Awake()
     {
         GameManager.Instance.player = this;
         rb = GetComponent<Rigidbody2D>();
+        
 
     }
     private void Start()
@@ -169,6 +173,7 @@ public class PlayerMovement : MonoBehaviour
 
         runAccel = Mathf.Clamp(runAccel, 0.01f, runMaxSpeed);
         runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
+
 
         SetGravityTo(gravityScale);
         isFacingRight = true;
@@ -191,6 +196,8 @@ public class PlayerMovement : MonoBehaviour
         Friction();
 
         AnimationHandler();
+
+        ParticleHandler();
 
         
 
@@ -407,6 +414,28 @@ public class PlayerMovement : MonoBehaviour
             amount *= Mathf.Sign(rb.velocity.x);
             rb.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
         }
+    }
+
+    private void ParticleHandler()
+    {
+        //if (isFacingRight) feetPart.transform.Rotate(new Vector3(0,180,0));
+
+        if (moveInput.x != 0 && lastOnGroundTime > 0f)
+        {
+            feetPart.Play();
+            if (isFacingRight)
+            {
+                feetPart.transform.eulerAngles = new Vector3(0, 0, 0);
+                psr.flip = new Vector3(0, 0, 0);
+
+            }
+            else
+            {
+                feetPart.transform.eulerAngles = new Vector3(0, 180, 0);
+                psr.flip = new Vector3(1, 0, 0);
+            }
+        }
+        else feetPart.Stop();
     }
 
     public void OnJumpInput()
