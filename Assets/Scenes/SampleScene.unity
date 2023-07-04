@@ -7038,16 +7038,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!199 &808024487 stripped
-ParticleSystemRenderer:
-  m_CorrespondingSourceObject: {fileID: 6807909013797162131, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-  m_PrefabInstance: {fileID: 5767787965074033600}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &808024488 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6239125060063070569, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-  m_PrefabInstance: {fileID: 5767787965074033600}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1004675517
 GameObject:
   m_ObjectHideFlags: 0
@@ -7082,11 +7072,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1833557149 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 912809560171663588, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-  m_PrefabInstance: {fileID: 5767787965074033600}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1998420916
 GameObject:
   m_ObjectHideFlags: 0
@@ -54907,10 +54892,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1448421730781697481, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: m_Name
-      value: feetParticle
-      objectReference: {fileID: 0}
     - target: {fileID: 3420539920942515502, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -54953,30 +54934,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3420539920942515502, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3683514168462868676, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: psr
-      value: 
-      objectReference: {fileID: 808024487}
-    - target: {fileID: 3683514168462868676, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: anim
-      value: 
-      objectReference: {fileID: 1833557149}
-    - target: {fileID: 3683514168462868676, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: feetPart
-      value: 
-      objectReference: {fileID: 808024488}
-    - target: {fileID: 6239125060063070569, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: moveWithTransform
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6807909013797162131, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: m_Flip.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6807909013797162131, guid: 90170b01c555890468c4a1c8a672042d, type: 3}
-      propertyPath: m_Flip.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7307357201303241836, guid: 90170b01c555890468c4a1c8a672042d, type: 3}

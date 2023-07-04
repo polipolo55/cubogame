@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 6239125060063070569}
   - component: {fileID: 6807909013797162131}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: feetParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5093,9 +5093,11 @@ MonoBehaviour:
   floor:
     serializedVersion: 2
     m_Bits: 64
-  anim: {fileID: 0}
+  anim: {fileID: 912809560171663588}
   onWall: 0
   gravityUpdateCheck: 1
+  feetPart: {fileID: 6239125060063070569}
+  psr: {fileID: 6807909013797162131}
 --- !u!114 &529713663910995087
 MonoBehaviour:
   m_ObjectHideFlags: 0
