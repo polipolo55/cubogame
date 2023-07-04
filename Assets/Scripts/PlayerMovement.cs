@@ -149,7 +149,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 wallCheckSize;
 
-    public ParticleSystem feetPart;
+
+    public ParticleSystem dust;
     public ParticleSystemRenderer psr;
 
     private void Awake()
@@ -196,9 +197,6 @@ public class PlayerMovement : MonoBehaviour
         Friction();
 
         AnimationHandler();
-
-        ParticleHandler();
-
         
 
 
@@ -416,27 +414,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ParticleHandler()
+    private void makeDust()
     {
-        //if (isFacingRight) feetPart.transform.Rotate(new Vector3(0,180,0));
-
-        if (lastOnGroundTime == jumpInputBufferTime)
-        {
-            feetPart.Play();
+        if (lastOnGroundTime > 0f) {
             if (isFacingRight)
             {
-                feetPart.transform.eulerAngles = new Vector3(0, 0, 0);
-                psr.flip = new Vector3(0, 0, 0);
-
+                dust.transform.eulerAngles = new Vector3(0f, 0f, 0f);
+                psr.flip = new Vector3(1f, 0f, 0f);
             }
             else
             {
-                feetPart.transform.eulerAngles = new Vector3(0, 180, 0);
-                psr.flip = new Vector3(1, 0, 0);
+                dust.transform.eulerAngles = new Vector3(0f, 180f, 0f);
+                psr.flip = new Vector3(0f, 0f, 0f);
             }
+            dust.Play();
         }
-        else feetPart.Stop();
- 
+
     }
 
     public void OnJumpInput()
@@ -458,6 +451,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Turn()
     {
+        makeDust();
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
