@@ -58,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     public float slideAccel;
 
 
+    public float floorSlideSpeed;
     [Space(10)]
 
     //public float slideSpeed;
@@ -511,6 +512,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+
     private IEnumerator StartDash(Vector2 dir)
     {
         anim.SetTrigger("Dash");
@@ -634,6 +636,12 @@ public class PlayerMovement : MonoBehaviour
     private bool CanSlide()
     {
         return (lastOnWallTime > 0 && !isJumping && !isWallJumping && lastOnGroundTime <= 0);
+    }
+
+    private bool canGroundSlide()
+    {
+        return (lastOnGroundTime > 0 && !isDashing && !isJumping && moveInput != Vector2.zero);
+
     }
 
 
