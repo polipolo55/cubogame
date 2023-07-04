@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -89,7 +85,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("assits")]
     [Range(0.01f, 0.5f)] public float coyoteTime; //temps despres de plataforma
     [Range(0.01f, 0.5f)] public float jumpInputBufferTime;
-    
+    [Range(0.01f, 0.5f)] public float groundSlideInputBufferTime;
+    public float groundSlideSpeed;
+    public float groundSlideAcc;
+
 
 
 
@@ -104,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isWallJumping { get; private set; }
     public bool isSliding { get; private set; }
     public bool isDashing { get; private set; }
+    public bool isGroundSlide { get; private set; }
 
 
 
@@ -112,17 +112,23 @@ public class PlayerMovement : MonoBehaviour
     public float lastOnWallRightTime { get; private set; }
     public float lastOnWallLeftTime { get; private set; }
 
+    public float timeGroundSliding { get; private set; }
+
     public bool onRightWall { get; private set; }
     public bool onLeftWall { get; private set; }
 
+    public float groundSlideDirection { get; private set; }
+
 
     //Jump
-    private bool _isJumpCut;
-    private bool _isJumpFalling;
+    private bool isJumpCut;
+    private bool isJumpFalling;
 
     //Wall Jump
     private float _wallJumpStartTime;
     private int _lastWallJumpDir;
+
+    private bool isGroundSlideCut;
 
 
     
@@ -130,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     public float lastPressedJumpTime { get; private set; }
     public float lastPressedDashTime { get; private set; }
+    public float lastPressedGroundSlideTime { get; private set; }
 
     //Casiopea - Galactic Funk
 
@@ -191,8 +198,6 @@ public class PlayerMovement : MonoBehaviour
 
         Comprovations();
 
-        //aqui es comprovaria si pot dashear i fer slide
-
         GravityHandling();
 
         Friction();
@@ -228,11 +233,22 @@ public class PlayerMovement : MonoBehaviour
     public void HorizontalMove(InputAction.CallbackContext ctx)
     {
         moveInput.x = ctx.ReadValue<float>();
-        if(moveInput.x != 0) CheckDirectionToFace(moveInput.x > 0);
     }
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
         moveInput.y = ctx.ReadValue<float>();
+
+        if (ctx.started && moveInput.y < 0f)
+        {
+            Debug.Log("slide input");
+            onGroundSlideInput();
+        }
+        else if (ctx.canceled && isGroundSlide)
+        {
+            Debug.Log("slide release");
+            timeGroundSliding = 0f;
+            onGroundSlideRelease();
+        }
     }
     public void JumpMove(InputAction.CallbackContext ctx)
     {
@@ -309,7 +325,7 @@ public class PlayerMovement : MonoBehaviour
             isJumping = false;
 
             if (!isWallJumping)
-                _isJumpFalling = true;
+                isJumpFalling = true;
         }
 
         if (isWallJumping && Time.time - _wallJumpStartTime > wallJumpTime)
@@ -319,10 +335,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (lastOnGroundTime > 0 && !isJumping && !isWallJumping)
         {
-            _isJumpCut = false;
+            isJumpCut = false;
 
             if (!isJumping)
-                _isJumpFalling = false;
+                isJumpFalling = false;
         }
         if (!isDashing)
         {
@@ -331,8 +347,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 isJumping = true;
                 isWallJumping = false;
-                _isJumpCut = false;
-                _isJumpFalling = false;
+                isJumpCut = false;
+                isJumpFalling = false;
+                isGroundSlide = false;
                 Jump();
             }
             //walljump
@@ -340,8 +357,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 isWallJumping = true;
                 isJumping = false;
-                _isJumpCut = false;
-                _isJumpFalling = false;
+                isJumpCut = false;
+                isJumpFalling = false;
+                isGroundSlide = false;
                 _wallJumpStartTime = Time.time;
                 _lastWallJumpDir = (lastOnWallRightTime > 0) ? -1 : 1;
 
@@ -357,8 +375,9 @@ public class PlayerMovement : MonoBehaviour
 
             isDashing = true;
             isJumping = false;
+            isGroundSlide = false;
             isWallJumping = false;
-            _isJumpCut = false;
+            isJumpCut = false;
 
             StartCoroutine(nameof(StartDash), lastDashDir);
         }
@@ -367,6 +386,22 @@ public class PlayerMovement : MonoBehaviour
             isSliding = true;
         }
         else isSliding = false;
+
+        if (canGroundSlide() && lastPressedGroundSlideTime > 0)
+        {
+            Debug.Log("checked and true");
+            isGroundSlide = true;
+            isJumping = false;
+            isWallJumping = false;
+            isDashing = false;
+            isJumpCut = false;
+            groundSlide();
+        }
+        if (isGroundSlide && lastOnGroundTime != jumpInputBufferTime) 
+        {
+            isGroundSlide = false;
+            timeGroundSliding = 0f;
+        }
 
     }
     private void GravityHandling()
@@ -379,13 +414,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 SetGravityTo(0);
             }
-            else if (_isJumpCut)
+            else if (isJumpCut)
             {
                 SetGravityTo(gravityScale * jumpCutGravityMult);
                 rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
 
             }
-            else if ((isJumping || isWallJumping || _isJumpFalling) && Mathf.Abs(rb.velocity.y) < jumpHangTimeThreshold)
+            else if ((isJumping || isWallJumping || isJumpFalling) && Mathf.Abs(rb.velocity.y) < jumpHangTimeThreshold)
             {
                 SetGravityTo(gravityScale * jumpHangGravityMult);
             }
@@ -446,7 +481,21 @@ public class PlayerMovement : MonoBehaviour
     public void OnJumpRelease()
     {
         if (CanJumpCut() || CanWallJumpCut())
-            _isJumpCut = true;
+            isJumpCut = true;
+    }
+
+    public void onGroundSlideInput()
+    {
+        lastPressedGroundSlideTime = groundSlideInputBufferTime;
+        if (!isGroundSlide) groundSlideDirection = moveInput.x;
+    }
+
+    public void onGroundSlideRelease()
+    {
+        if(CanGroundSlideCut())
+        {
+            isGroundSlide = false;
+        }
     }
 
 
@@ -477,6 +526,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Run(float lerp)
     {
+        if (moveInput.x != 0) CheckDirectionToFace(moveInput.x > 0);
+
         float targetSpeed = moveInput.x * runMaxSpeed;
         targetSpeed = Mathf.Lerp(rb.velocity.x, targetSpeed, lerp);
 
@@ -487,7 +538,7 @@ public class PlayerMovement : MonoBehaviour
 
         //el script bo fa aqui una implementacio de mes acceleracio en el apex del jump, la podriem posar pero mes endevant
 
-        if (doConserveMomentum && Mathf.Abs(rb.velocity.x) > Mathf.Abs(targetSpeed) && Mathf.Sign(rb.velocity.x) == Mathf.Sign(targetSpeed) && Mathf.Abs(targetSpeed) > 0.01f && lastOnGroundTime < 0)
+        if ((doConserveMomentum && Mathf.Abs(rb.velocity.x) > Mathf.Abs(targetSpeed) && Mathf.Sign(rb.velocity.x) == Mathf.Sign(targetSpeed) && Mathf.Abs(targetSpeed) > 0.01f && lastOnGroundTime < 0) || isGroundSlide)
         {
             accelRate = 0;
         }
@@ -497,6 +548,34 @@ public class PlayerMovement : MonoBehaviour
         float movement = speedDif * accelRate;
 
         rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+
+    }
+
+    private void groundSlide()
+    {
+        lastPressedGroundSlideTime = 0;
+        float targetSpeed = groundSlideDirection * groundSlideSpeed;
+
+        float accelRate;
+
+        if ((doConserveMomentum && Mathf.Abs(rb.velocity.x) > Mathf.Abs(targetSpeed) && Mathf.Sign(rb.velocity.x) == Mathf.Sign(targetSpeed) && Mathf.Abs(targetSpeed) > 0.01f && lastOnGroundTime < 0))
+        {
+            accelRate = 0;
+        } 
+        else
+        {
+            accelRate = groundSlideAcc;
+        }
+        float speedDif = targetSpeed - rb.velocity.x;
+
+        float movement = speedDif * accelRate;
+
+        timeGroundSliding += Time.time;
+
+        Debug.Log("sliding");
+
+        rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+
 
     }
 
@@ -585,13 +664,14 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("isOnRightWall", onRightWall);
         anim.SetBool("isOnLeftWall", onLeftWall);
         anim.SetBool("isDashing", isDashing);
+        anim.SetBool("isGroundSlide", isGroundSlide);
     }
 
     //condocions fetes be =)
 
     public void CheckDirectionToFace(bool isMovingRight)
     {
-        if (isMovingRight != isFacingRight)
+        if (isMovingRight != isFacingRight && !isGroundSlide)
             Turn();
     }
 
@@ -599,6 +679,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float speedDif = wallFallSpeed - rb.velocity.y;
         float movement = speedDif * slideAccel;
+        makeDust();
         movement = Mathf.Clamp(movement, -Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime), Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime));
         rb.AddForce(movement * Vector2.up);
     }
@@ -616,6 +697,11 @@ public class PlayerMovement : MonoBehaviour
     private bool CanJumpCut()
     {
         return isJumping && rb.velocity.y > 0;
+    }
+
+    private bool CanGroundSlideCut()
+    {
+        return isGroundSlide;
     }
 
     private bool CanWallJumpCut()
@@ -640,8 +726,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canGroundSlide()
     {
-        return (lastOnGroundTime > 0 && !isDashing && !isJumping && moveInput != Vector2.zero);
-
+        bool slide = (lastOnGroundTime > 0 && !isDashing && !isJumping && !isGroundSlide && moveInput.x != 0);
+        return slide;
     }
 
 

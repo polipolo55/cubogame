@@ -7050,6 +7050,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3174301412527104245, guid: bdaa8e896001bfc44a648075aa59c8d5, type: 3}
+      propertyPath: groundSlideAcc
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174301412527104245, guid: bdaa8e896001bfc44a648075aa59c8d5, type: 3}
+      propertyPath: groundSlideSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174301412527104245, guid: bdaa8e896001bfc44a648075aa59c8d5, type: 3}
+      propertyPath: groundSlideInputBufferTime
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5062873300382362491, guid: bdaa8e896001bfc44a648075aa59c8d5, type: 3}
       propertyPath: m_RootOrder
       value: 4
