@@ -435,7 +435,7 @@ public class PlayerMovement : MonoBehaviour
                 psr.flip = new Vector3(1, 0, 0);
             }
         }
-        else feetPart.Stop();
+        else feetPart.Pause();
     }
 
     public void OnJumpInput()
