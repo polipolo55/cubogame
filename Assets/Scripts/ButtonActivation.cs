@@ -13,6 +13,11 @@ public class ButtonActivation : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player") anim.SetBool("DoorOpen", true);
+        if (collision.gameObject.tag == "Player") 
+        {
+            anim.SetBool("DoorOpen", true);
+            Debug.Log("a");
+        }
+        
     }
 }
