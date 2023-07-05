@@ -33,6 +33,7 @@ public class Parallax : MonoBehaviour
             startposition.x -= length.x;
         }
         relative_pos.z = startposition.z;
+
         transform.position = startposition + relative_pos;
 
     }
