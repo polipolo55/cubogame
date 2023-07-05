@@ -8,7 +8,13 @@ public class NextStage : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player") nextStage();
+
+        if (collision.tag == "Player") 
+        {
+            float time = GameManager.Instance.timer.TimeOnEnd();
+            GameManager.Instance.addTime(time);
+            nextStage();
+        }
     }
 
     private void nextStage()

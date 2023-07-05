@@ -10,18 +10,27 @@ public class Timer : MonoBehaviour
     public TextMeshProUGUI ui;
 
     public float currentTime;
-    // Start is called before the first frame update
+
+
+    private void Awake()
+    {
+        GameManager.Instance.timer = this;
+    }
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         currentTime += Time.deltaTime;
         TimeSpan time = TimeSpan.FromSeconds(currentTime);
         ui.text = time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00") + "." + time.Milliseconds.ToString("00");
 
+    }
+
+    public float TimeOnEnd()
+    {
+        return currentTime;
     }
 }
