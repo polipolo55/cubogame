@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 
 
     public CameraShake cameraShake;
-    public CloudMovement cloud;
 
     
 
