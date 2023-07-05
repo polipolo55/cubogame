@@ -16,6 +16,7 @@ public class CloudLogic : MonoBehaviour
 
     public float speed;
     public float deathTime;
+    private float deathTimer;
 
 
 
@@ -31,12 +32,17 @@ public class CloudLogic : MonoBehaviour
     public float deccelDiv;
 
     private Rigidbody2D rb;
-    public GameObject gas;
+    public GameObject gas; 
     public GameObject deathMask;
+    public Material vignette;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        Color color = vignette.color;
+        color.a = 0.2f;
+        vignette.color = color;
+        deathTimer = deathTime;
     }
 
     void Start()
@@ -53,7 +59,14 @@ public class CloudLogic : MonoBehaviour
         deccelDiff = gas.transform.position.x - (playerPos - deccelThreshold);
 
         if (accelDiff > 0) accelMult = 1 + Mathf.Pow(accelDiff / accelDiv, 2);
-        else if (deccelDiff > 0) accelMult = 1 - Mathf.Pow(deccelDiff / deccelDiv, 2);
+        else if (deccelDiff > 0) 
+        {
+            accelMult = 1 - Mathf.Pow(deccelDiff / deccelDiv, 2);
+            Color color = vignette.color;
+            color.a = 0.2f + (deccelDiff / deccelThreshold) * 0.8f;
+            vignette.color = color;
+            GameManager.Instance.cameraShake.ShakeWithDuration(0.1f);
+        } 
         else accelMult = 1;
 
         if(deathTime < 0)
@@ -93,7 +106,8 @@ public class CloudLogic : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player") deathTime -= Time.fixedDeltaTime;
+        if (collision.tag == "Player") deathTimer -= Time.fixedDeltaTime;
+        else deathTimer = deathTime;
     }
 
 
