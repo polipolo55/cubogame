@@ -1,2 +1,2 @@
 # cubogame
- joc del curs unity fib 2023
+ Joc del curs unity fib 2023
