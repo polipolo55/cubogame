@@ -1898,6 +1898,7 @@ GameObject:
   - component: {fileID: 516664273}
   - component: {fileID: 516664275}
   - component: {fileID: 516664276}
+  - component: {fileID: 516664277}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -1975,6 +1976,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &516664277
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516664272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2467,6 +2485,7 @@ Transform:
   - {fileID: 519420032}
   - {fileID: 1998420918}
   - {fileID: 93516232}
+  - {fileID: 1712192888}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2624,6 +2643,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2106260737821398668, guid: b55b28803ccded849ac71af166f82480, type: 3}
+      propertyPath: cameraShake
+      value: 
+      objectReference: {fileID: 1712192889}
     - target: {fileID: 5320343783911298853, guid: b55b28803ccded849ac71af166f82480, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -2815,6 +2838,54 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.50549316, y: 2.4494476}
   m_EdgeRadius: 0
+--- !u!1 &1712192887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1712192888}
+  - component: {fileID: 1712192889}
+  m_Layer: 0
+  m_Name: CameraShake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1712192888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712192887}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1004675518}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1712192889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712192887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8060a07322e373d469be99aff9ea5a96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShakeDuration: 0.3
+  ShakeAmplitude: 2
+  ShakeFrequency: 1
+  VirtualCamera: {fileID: 1998420917}
 --- !u!1 &1770963809
 GameObject:
   m_ObjectHideFlags: 0
