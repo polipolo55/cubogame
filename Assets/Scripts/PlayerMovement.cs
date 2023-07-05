@@ -761,14 +761,3 @@ public class PlayerMovement : MonoBehaviour
         
     }
 }
-
-
-
-
-
-/*
-Debug.DrawLine(groundPoint.transform.position, groundPoint.transform.position + new Vector3(0.5f,0.05f,0), Color.red, 1f);
-Debug.DrawLine(groundPoint.transform.position, groundPoint.transform.position + new Vector3(-.5f, 0.05f, 0), Color.red, 1f);
-Debug.DrawLine(groundPoint.transform.position, groundPoint.transform.position + new Vector3(.5f, -0.05f, 0), Color.red, 1f);
-Debug.DrawLine(groundPoint.transform.position, groundPoint.transform.position + new Vector3(-.5f, -0.05f, 0), Color.red, 1f);
-*/

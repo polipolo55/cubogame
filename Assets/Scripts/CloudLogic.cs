@@ -69,7 +69,7 @@ public class CloudLogic : MonoBehaviour
         } 
         else accelMult = 1;
 
-        if(deathTime < 0)
+        if(deathTimer < 0)
         {
             GameManager.Instance.player.canInput = false;
             GameManager.Instance.player.isAlive = false;

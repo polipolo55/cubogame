@@ -17,8 +17,11 @@ public class CameraShake : MonoBehaviour
     public CinemachineVirtualCamera VirtualCamera;
     private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
 
-
-    void Start()
+    private void Awake()
+    {
+        GameManager.Instance.cameraShake = this;
+    }
+    private void Start()
     {
  
         if (VirtualCamera != null)
@@ -26,7 +29,7 @@ public class CameraShake : MonoBehaviour
     }
 
 
-    void Update()
+    private void Update()
     {
         if (VirtualCamera != null && virtualCameraNoise != null)
         {

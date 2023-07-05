@@ -11,18 +11,16 @@ public class GameManager : MonoBehaviour
 
     public CameraShake cameraShake;
 
-    
 
     private void Awake()
     {
-        if(Instance == null)
+        if(Instance != null)
         {
             Destroy(gameObject);
-        }
+            return;
+        }   
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
-    
-    
 
 }
