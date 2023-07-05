@@ -8,7 +8,9 @@ public class GameManager : MonoBehaviour
 
     public PlayerMovement player;
 
+
     public CameraShake cameraShake;
+    public CloudMovement cloud;
 
     
 
