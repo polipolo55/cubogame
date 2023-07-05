@@ -22,16 +22,17 @@ public class Parallax : MonoBehaviour
     {
         Vector3 relative_pos = your_camera.transform.position * parallax_value;
         Vector3 dist = your_camera.transform.position - relative_pos;
-        if (dist.x > startposition.x + length.x)
+        if (dist.x > startposition.x + (length.x))
         {
+            Debug.Log("1");
             startposition.x += length.x;
         }
-        if (dist.x < startposition.x - length.x)
+        if (dist.x < startposition.x - (length.x))
         {
+            Debug.Log("2");
             startposition.x -= length.x;
         }
         relative_pos.z = startposition.z;
-        relative_pos.y = startposition.y;
         transform.position = startposition + relative_pos;
 
     }
