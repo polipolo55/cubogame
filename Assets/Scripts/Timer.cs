@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class Timer : MonoBehaviour
 {
@@ -19,12 +20,8 @@ public class Timer : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
-        
-        setTimerText();
-    }
+        TimeSpan time = TimeSpan.FromSeconds(currentTime);
+        ui.text = time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00") + "." + time.Milliseconds.ToString("00");
 
-    private void setTimerText()
-    {
-        ui.text = currentTime.ToString("00:00.00");
     }
 }

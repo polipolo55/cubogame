@@ -79,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
     private bool dashRefilling;
     private Vector2 lastDashDir;
     private bool isDashingStarting;
+    public bool canInput = true;
 
     [Range(0f, 1f)] public float grabWallGravMult;
 
@@ -104,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isSliding { get; private set; }
     public bool isDashing { get; private set; }
     public bool isGroundSlide { get; private set; }
+    public bool isAlive;
 
 
 
@@ -165,6 +167,7 @@ public class PlayerMovement : MonoBehaviour
     { 
         GameManager.Instance.player = this;
         rb = GetComponent<Rigidbody2D>();
+        isAlive = true;
         
 
     }
@@ -232,39 +235,49 @@ public class PlayerMovement : MonoBehaviour
 
     public void HorizontalMove(InputAction.CallbackContext ctx)
     {
-        moveInput.x = ctx.ReadValue<float>();
+        if(canInput) moveInput.x = ctx.ReadValue<float>();
     }
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
-        moveInput.y = ctx.ReadValue<float>();
+        if(canInput)
+        {
+            moveInput.y = ctx.ReadValue<float>();
 
-        if (ctx.started && moveInput.y < 0f)
-        {
-            Debug.Log("slide input");
-            onGroundSlideInput();
-        }
-        else if (ctx.canceled && isGroundSlide)
-        {
-            Debug.Log("slide release");
-            timeGroundSliding = 0f;
-            onGroundSlideRelease();
+            if (ctx.started && moveInput.y < 0f)
+            {
+                Debug.Log("slide input");
+                onGroundSlideInput();
+            }
+            else if (ctx.canceled && isGroundSlide)
+            {
+                Debug.Log("slide release");
+                timeGroundSliding = 0f;
+                onGroundSlideRelease();
+            }
         }
     }
     public void JumpMove(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if(canInput)
         {
-            OnJumpInput();
-        } else if (ctx.canceled)
-        {
-            OnJumpRelease();
+            if (ctx.started)
+            {
+                OnJumpInput();
+            }
+            else if (ctx.canceled)
+            {
+                OnJumpRelease();
+            }
         }
     }
     public void DashMove(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if(canInput)
         {
-            OnDashInput();
+            if (ctx.started)
+            {
+                OnDashInput();
+            }
         }
     }
 
@@ -509,7 +522,7 @@ public class PlayerMovement : MonoBehaviour
         isFacingRight = !isFacingRight;
     }
 
-    private void Sleep(float duration)
+    public void Sleep(float duration)
     {
         StartCoroutine(nameof(doSleep), duration);
     }
