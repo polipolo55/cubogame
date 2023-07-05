@@ -397,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
             isJumpCut = false;
             groundSlide();
         }
-        if (isGroundSlide && lastOnGroundTime != jumpInputBufferTime) 
+        if ((isGroundSlide && lastOnGroundTime != jumpInputBufferTime) || Mathf.Abs(rb.velocity.x) < 0.5f) 
         {
             isGroundSlide = false;
             timeGroundSliding = 0f;
