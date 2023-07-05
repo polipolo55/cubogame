@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     private List<float> timeStorage = new List<float>();
 
+    public bool TutorialPlayed;
+
 
     private void Awake()
     {
