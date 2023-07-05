@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CloudLogic : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class CloudLogic : MonoBehaviour
     private float accelMult;
 
     public float speed;
+    public float deathTime;
 
 
 
@@ -30,10 +32,15 @@ public class CloudLogic : MonoBehaviour
 
     private Rigidbody2D rb;
     public GameObject gas;
+    public GameObject deathMask;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Start()
+    {
     }
 
     // Update is called once per frame
@@ -48,6 +55,25 @@ public class CloudLogic : MonoBehaviour
         if (accelDiff > 0) accelMult = 1 + Mathf.Pow(accelDiff / accelDiv, 2);
         else if (deccelDiff > 0) accelMult = 1 - Mathf.Pow(deccelDiff / deccelDiv, 2);
         else accelMult = 1;
+
+        if(deathTime < 0)
+        {
+            GameManager.Instance.player.canInput = false;
+            GameManager.Instance.player.isAlive = false;
+            GameManager.Instance.player.rb.velocity = Vector2.zero;
+            if(deathMask.transform.localScale.x > 0) deathMask.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+
+
+        }
+        else if(deathMask.transform.localScale.x < 95)
+        {
+            deathMask.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+        }
+
 
 
 
@@ -64,5 +90,13 @@ public class CloudLogic : MonoBehaviour
         Gizmos.DrawLine(new Vector3((playerPos - accelThreshold), -10, 0), new Vector3((playerPos - accelThreshold), 10, 0));
         Gizmos.DrawLine(new Vector3((playerPos - deccelThreshold), -10, 0), new Vector3((playerPos - deccelThreshold), 10, 0));
     }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Player") deathTime -= Time.fixedDeltaTime;
+    }
+
+
+
 
 }
