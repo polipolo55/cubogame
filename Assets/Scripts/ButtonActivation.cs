@@ -16,7 +16,6 @@ public class ButtonActivation : MonoBehaviour
         if (collision.gameObject.tag == "Player") 
         {
             anim.SetBool("DoorOpen", true);
-            Debug.Log("a");
         }
         
     }

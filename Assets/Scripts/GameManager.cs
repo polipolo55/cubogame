@@ -25,9 +25,13 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<string, Recording> recordingMap = new Dictionary<string, Recording>();
 
+    public Dictionary<string, Recording> BestMap = new Dictionary<string, Recording>();
+
     public bool TutorialPlayed;
 
     public bool gamePlayedOnce = false;
+
+    public float bestTime = 0;
 
     
 
@@ -56,7 +60,6 @@ public class GameManager : MonoBehaviour
     public void addTime(float time)
     {
         timeStorage.Add(time);
-        Debug.Log(time);
     }
 
     public float totalTime()
@@ -73,6 +76,16 @@ public class GameManager : MonoBehaviour
     public void addToMap(string key, Recording rec)
     {
         recordingMap[key] = rec;
+    }
+
+    public void timeHandler()
+    {
+        float aux = totalTime();
+        if (aux > bestTime)
+        {
+            BestMap = recordingMap;
+            bestTime = totalTime();
+        }
     }
 
     
