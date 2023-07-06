@@ -162,10 +162,11 @@ public class PlayerMovement : MonoBehaviour
 
     public ParticleSystem dust;
     public ParticleSystemRenderer psr;
+    public GameObject teleport;
 
     private void Awake()
     { 
-        GameManager.Instance.player = this;
+        GameManager.Instance.player = this; 
         rb = GetComponent<Rigidbody2D>();
         isAlive = true;
         
@@ -232,7 +233,13 @@ public class PlayerMovement : MonoBehaviour
 
        // aqui shauria de posar el slide a part
     }
-
+    public void tp(InputAction.CallbackContext ctx)
+    {
+        if(ctx.started)
+        {
+            transform.position = teleport.transform.position;
+        }
+    }
     public void HorizontalMove(InputAction.CallbackContext ctx)
     {
         if(canInput) moveInput.x = ctx.ReadValue<float>();
@@ -240,17 +247,15 @@ public class PlayerMovement : MonoBehaviour
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
         if(canInput)
-        {
+        {   
             moveInput.y = ctx.ReadValue<float>();
 
             if (ctx.started && moveInput.y < 0f)
             {
-                Debug.Log("slide input");
                 onGroundSlideInput();
             }
             else if (ctx.canceled && isGroundSlide)
             {
-                Debug.Log("slide release");
                 timeGroundSliding = 0f;
                 onGroundSlideRelease();
             }

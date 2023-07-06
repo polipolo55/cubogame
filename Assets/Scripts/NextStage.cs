@@ -12,18 +12,23 @@ public class NextStage : MonoBehaviour
 
         if (collision.tag == "Player") 
         {
+            Debug.Log("TRUCA DOS COPS?");
             if (GameManager.Instance.timer != null)
             {
                 float time = GameManager.Instance.timer.TimeOnEnd();
                 GameManager.Instance.addTime(time);
             }
+            
             nextStage();
         }
     }
 
     private void nextStage()
     {
+        GameManager.Instance.passedLevel();
         SceneManager.LoadScene(levelName);
+        GhostRunner.Instance.onLevelStart();
+        if (SceneManager.GetActiveScene().name == "End") GameManager.Instance.gamePlayedOnce = true;
     }
 
 
