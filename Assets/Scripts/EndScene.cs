@@ -17,6 +17,8 @@ public class EndScene : MonoBehaviour
     public TextMeshProUGUI maxTimeText;
     public Vector2 startingPosition;
     public float lineHeight = 30f;
+    public GameObject secret;
+
 
     private List<float> floatList;
     private bool textDisplayed = false;
@@ -27,6 +29,8 @@ public class EndScene : MonoBehaviour
     {
         sum = GameManager.Instance.totalTime();
         floatList = GameManager.Instance.getTimesList();
+
+
         Debug.Log(sum);
         leaderBoard.SetActive(false);
     }
@@ -56,6 +60,10 @@ public class EndScene : MonoBehaviour
         TimeSpan sumTime = TimeSpan.FromSeconds(sum);
         string sumText = sumTime.Minutes.ToString("00") + ":" + sumTime.Seconds.ToString("00") + "." + sumTime.Milliseconds.ToString("00");
         maxTimeText.text = string.Format("{0}", sumText);
+        if (sumTime.Seconds == 33)
+        {
+            secret.SetActive(true);
+        }
 
         for (int i = 0; i < floatList.Count; i++)
         {
@@ -68,6 +76,7 @@ public class EndScene : MonoBehaviour
             TextMeshProUGUI textMeshPro = textObject.GetComponent<TextMeshProUGUI>();
 
             TimeSpan time = TimeSpan.FromSeconds(floatList[i]);
+
 
             string text = time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00") + "." + time.Milliseconds.ToString("00");
 
