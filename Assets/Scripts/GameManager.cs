@@ -45,8 +45,9 @@ public class GameManager : MonoBehaviour
         Debug.Log(time);
     }
 
-    public void totalTime(List<float> times)
+    public float totalTime()
     {
-        float sum = times.Sum();
+        float sum = timeStorage.Sum();
+        return sum;
     }
 }

@@ -9,7 +9,8 @@ public class EndScene : MonoBehaviour
 
     void Start()
     {
-
+        float sum = GameManager.Instance.totalTime();
+        Debug.Log(sum);
     }
 
     // Update is called once per frame
