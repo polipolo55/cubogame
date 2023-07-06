@@ -85,7 +85,7 @@ public class EndScene : MonoBehaviour
             secret.SetActive(true);
         }
 
-        for (int i = 0; i < floatList.Count; i++)
+        for (int i = 1; i <= floatList.Count; i++)
         {
             Vector2 position = startingPosition + new Vector2(0f, -lineHeight * i);
 
@@ -96,7 +96,6 @@ public class EndScene : MonoBehaviour
             TextMeshProUGUI textMeshPro = textObject.GetComponent<TextMeshProUGUI>();
 
             TimeSpan time = TimeSpan.FromSeconds(floatList[i]);
-
 
             string text = time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00") + "." + time.Milliseconds.ToString("00");
 

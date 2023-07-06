@@ -4907,7 +4907,7 @@ Transform:
   - {fileID: 6549788963257006817}
   - {fileID: 3036406298642212069}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6418039503724717754
 Rigidbody2D:
@@ -5047,6 +5047,9 @@ MonoBehaviour:
   dust: {fileID: 7647042155485330850}
   psr: {fileID: 3540230244109139351}
   teleport: {fileID: 0}
+  jump: {fileID: 8300000, guid: 7c149f612de9ade488a876299ded4fd1, type: 3}
+  fall: {fileID: 8300000, guid: fd58e3ca8d81a0841b7d706be2b72594, type: 3}
+  dash: {fileID: 8300000, guid: 443d540ab6a82ba4b8eb28c1e22c3926, type: 3}
 --- !u!114 &3250784796760945287
 MonoBehaviour:
   m_ObjectHideFlags: 0
