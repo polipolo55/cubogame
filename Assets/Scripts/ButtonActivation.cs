@@ -6,6 +6,7 @@ using UnityEngine.Animations;
 public class ButtonActivation : MonoBehaviour
 {
     public Animator anim;
+    public Animator but;
     public void Start()
     {
         anim.SetBool("DoorOpen", false);
@@ -16,7 +17,7 @@ public class ButtonActivation : MonoBehaviour
         if (collision.gameObject.tag == "Player") 
         {
             anim.SetBool("DoorOpen", true);
-            anim.SetBool("green", true);
+            but.SetBool("green", true);
             Debug.Log("a");
 
         }
@@ -27,7 +28,7 @@ public class ButtonActivation : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            anim.SetBool("green", false);
+            but.SetBool("green", false);
         }
     }
 }
