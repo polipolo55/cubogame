@@ -694,6 +694,7 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("isOnLeftWall", onLeftWall);
         anim.SetBool("isDashing", isDashing);
         anim.SetBool("isGroundSlide", isGroundSlide);
+        anim.SetBool("isAlive", isAlive);
     }
 
     //condocions fetes be =)

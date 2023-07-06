@@ -67,7 +67,11 @@ public class CloudLogic : MonoBehaviour
         if (accelDiff > 0) accelMult = 1 + Mathf.Pow(accelDiff / accelDiv, 2);
         else if (deccelDiff > 0) 
         {
-            accelMult = 1 - Mathf.Pow(deccelDiff / deccelDiv, 2);
+            if (1 - Mathf.Pow(deccelDiff / deccelDiv, 2) > 0.1f)
+            {
+                accelMult = 1 - Mathf.Pow(deccelDiff / deccelDiv, 2);
+            }
+            else accelMult = 0.1f; 
             Color color = vignette.color;
             color.a = 0.2f + (deccelDiff / deccelThreshold) * 0.8f;
             vignette.color = color;
