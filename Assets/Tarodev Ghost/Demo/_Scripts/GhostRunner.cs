@@ -8,10 +8,15 @@ public class GhostRunner : MonoBehaviour {
 
     private ReplaySystem _system;
 
-    private void Awake() => _system = new ReplaySystem(this);
+    private void Awake() 
+    {
+        _system = new ReplaySystem(this);
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start() 
     {
+        _recordTarget = GameManager.Instance.player.transform;
         _system.StartRun(_recordTarget, _captureEveryNFrames);
     }
 

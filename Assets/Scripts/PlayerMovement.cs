@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     { 
-        GameManager.Instance.player = this;
+        GameManager.Instance.player = this; 
         rb = GetComponent<Rigidbody2D>();
         isAlive = true;
         
