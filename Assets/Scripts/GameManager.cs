@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TarodevGhost;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -13,18 +15,21 @@ public class GameManager : MonoBehaviour
 
     public CameraShake cameraShake;
 
-    public GhostRunner ghostlogic;
+    public GhostRunnerMeu ghostlogic;
 
     public Timer timer;
 
+    public Recording rec;
+
     private List<float> timeStorage = new List<float>();
 
-    public Dictionary<string, string> recordingMap = new Dictionary<string, string>();
+    public Dictionary<string, Recording> recordingMap = new Dictionary<string, Recording>();
 
     public bool TutorialPlayed;
 
     public bool gamePlayedOnce = false;
 
+    
 
 
     private void Awake()
@@ -65,16 +70,9 @@ public class GameManager : MonoBehaviour
         return timeStorage;
     }
 
-
-    public void editMap(string levelName, string data)
+    public void addToMap(string key, Recording rec)
     {
-        recordingMap[levelName] = data;
-    }
-
-
-    public void addToMap(string key, string value)
-    {
-        recordingMap[key] = value;
+        recordingMap[key] = rec;
     }
 
     
