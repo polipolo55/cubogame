@@ -164,6 +164,10 @@ public class PlayerMovement : MonoBehaviour
     public ParticleSystemRenderer psr;
     public GameObject teleport;
 
+    public AudioClip jump;
+    public AudioClip fall;
+    public AudioClip dash;
+
     private void Awake()
     { 
         GameManager.Instance.player = this; 
@@ -238,7 +242,6 @@ public class PlayerMovement : MonoBehaviour
         if(ctx.performed)
         {
             transform.position = teleport.transform.position;
-            Debug.Log("TP");
         }
     }
     public void HorizontalMove(InputAction.CallbackContext ctx)
@@ -369,6 +372,7 @@ public class PlayerMovement : MonoBehaviour
                 isJumpCut = false;
                 isJumpFalling = false;
                 isGroundSlide = false;
+                SoundManager.instance.PlaySound(jump);
                 Jump();
             }
             //walljump
@@ -381,13 +385,14 @@ public class PlayerMovement : MonoBehaviour
                 isGroundSlide = false;
                 _wallJumpStartTime = Time.time;
                 _lastWallJumpDir = (lastOnWallRightTime > 0) ? -1 : 1;
-
+                SoundManager.instance.PlaySound(jump);
                 WallJump(_lastWallJumpDir);
             }
         }
 
         if (CanDash() && lastPressedDashTime > 0)
         {
+            SoundManager.instance.PlaySound(dash);
             Sleep(dashSleepTime);
             if (moveInput != Vector2.zero) lastDashDir = moveInput;
             else lastDashDir = isFacingRight ? Vector2.right : Vector2.left;
@@ -602,6 +607,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+        
+        
         lastPressedJumpTime = 0;
         lastOnGroundTime = 0;
 
@@ -657,6 +664,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallJump(int dir)
     {
+        
         lastPressedJumpTime = 0;
         lastOnGroundTime = 0;
         lastOnWallRightTime = 0;
