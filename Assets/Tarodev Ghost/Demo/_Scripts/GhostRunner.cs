@@ -18,6 +18,9 @@ public class GhostRunner : MonoBehaviour {
     {
         _recordTarget = GameManager.Instance.player.transform;
         _system.StartRun(_recordTarget, _captureEveryNFrames);
+
+        Recording run1;
+        _system.GetRun()
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
