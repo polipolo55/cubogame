@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +29,14 @@ public class GameManager : MonoBehaviour
         }   
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "PreLoad")
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
 
     public void addTime(float time)
