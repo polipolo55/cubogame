@@ -65,19 +65,12 @@ public class GameManager : MonoBehaviour
         recordingMap[levelName] = data;
     }
 
-    public void isEmpty()
-    {
-
-    } 
-
-    public void passedLevel()
-    {
-        if (ghostlogic == null) return;
-        ghostlogic.onLevelComplete();
-    }
 
     public void addToMap(string key, string value)
     {
         recordingMap[key] = value;
     }
+
+    
 }
+

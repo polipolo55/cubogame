@@ -2073,6 +2073,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625509457397139595, guid: bdaa8e896001bfc44a648075aa59c8d5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2109,8 +2113,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   cameraShake: {fileID: 0}
+  ghostlogic: {fileID: 0}
   timer: {fileID: 0}
   TutorialPlayed: 0
+  gamePlayedOnce: 0
 --- !u!4 &2042629983
 Transform:
   m_ObjectHideFlags: 0
