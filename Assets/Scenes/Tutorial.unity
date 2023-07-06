@@ -4877,6 +4877,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   TutorialPlayed: 0
   gamePlayedOnce: 0
+  bestTime: 0
 --- !u!4 &2042629983
 Transform:
   m_ObjectHideFlags: 0
@@ -52611,10 +52612,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 602109811952601934, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.079735
+      objectReference: {fileID: 0}
+    - target: {fileID: 602109811952601934, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -16.66455
+      objectReference: {fileID: 0}
     - target: {fileID: 1439574642448706518, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1538524216}
+    - target: {fileID: 2401153388004182817, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.746015
+      objectReference: {fileID: 0}
+    - target: {fileID: 2401153388004182817, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -16.108633
+      objectReference: {fileID: 0}
     - target: {fileID: 4696137814613908498, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
       propertyPath: m_Name
       value: Camera Manager
@@ -52668,7 +52685,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1448836330525869703}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 162421873162533248, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37619b01d88ae3e4fa44ccc6557b41e9, type: 3}

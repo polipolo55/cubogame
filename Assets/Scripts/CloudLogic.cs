@@ -17,6 +17,7 @@ public class CloudLogic : MonoBehaviour
     public float speed;
     public float deathTime;
     private float deathTimer;
+    private bool countDown = false;
 
 
 
@@ -52,6 +53,11 @@ public class CloudLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(countDown)
+        {
+            deathTimer -= Time.deltaTime;
+        }
+        
         playerPos = GameManager.Instance.player.transform.position.x;
         distance = playerPos - gas.transform.position.x;
 
@@ -104,10 +110,15 @@ public class CloudLogic : MonoBehaviour
         Gizmos.DrawLine(new Vector3((playerPos - deccelThreshold), -10, 0), new Vector3((playerPos - deccelThreshold), 10, 0));
     }
 
-    public void OnTriggerStay2D(Collider2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player") deathTimer -= Time.fixedDeltaTime;
-        else deathTimer = deathTime;
+        if (collision.tag == "Player") countDown = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        countDown = false;
+        if (collision.tag == "Player") deathTimer = deathTime;
     }
 
 

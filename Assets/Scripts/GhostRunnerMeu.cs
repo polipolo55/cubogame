@@ -33,7 +33,7 @@ public class GhostRunnerMeu : MonoBehaviour {
 
         if (GameManager.Instance.gamePlayedOnce)
         {
-            Recording run = GameManager.Instance.recordingMap[SceneManager.GetActiveScene().name];  
+            Recording run = GameManager.Instance.BestMap[SceneManager.GetActiveScene().name];  
             _system.SetSavedRun(run);
             _system.PlayRecording(RecordingType.Saved, Instantiate(_ghostPrefab));
         }

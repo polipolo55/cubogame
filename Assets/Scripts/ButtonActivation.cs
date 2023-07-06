@@ -18,6 +18,7 @@ public class ButtonActivation : MonoBehaviour
             anim.SetBool("DoorOpen", true);
             anim.SetBool("green", true);
             Debug.Log("a");
+
         }
         
     }
