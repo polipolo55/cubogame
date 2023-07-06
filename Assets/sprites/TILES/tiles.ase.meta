@@ -121,14 +121,14 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: tiles
     originalName: 
-    pivot: {x: 0.47368422, y: -0.25}
+    pivot: {x: 0.5, y: -0.25}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 456
+      width: 480
       height: 384
     spriteID: 9d9c949d2449be145a631c04867571eb
     spriteBone: []
@@ -151,9 +151,9 @@ ScriptedImporter:
     - name: tiles
       frameIndex: 0
       cellRect:
-        x: 24
+        x: 0
         y: 96
-        width: 456
+        width: 480
         height: 384
       spriteId: 9d9c949d2449be145a631c04867571eb
     linkedCells: []
