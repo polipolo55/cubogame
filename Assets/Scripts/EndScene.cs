@@ -73,5 +73,7 @@ public class EndScene : MonoBehaviour
 
             textMeshPro.text = string.Format("{0}.- {1}", i, text);
         }
+
+        GameManager.Instance.resetPartialList();
     }
 }
