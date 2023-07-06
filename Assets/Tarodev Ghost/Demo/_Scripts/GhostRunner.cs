@@ -36,7 +36,7 @@ public class GhostRunner : MonoBehaviour {
             string playRun = GameManager.Instance.recordingMap[SceneManager.GetActiveScene().name];
             Recording run = new Recording(playRun);
             _system.SetSavedRun(run);
-            _system.PlayRecording(RecordingType.Best, Instantiate(_ghostPrefab));
+            _system.PlayRecording(RecordingType.Saved, Instantiate(_ghostPrefab));
         }
     }
 
@@ -48,7 +48,6 @@ public class GhostRunner : MonoBehaviour {
         string data = run1.Serialize();
         string lvlName = SceneManager.GetActiveScene().name;
         GameManager.Instance.addToMap(lvlName, data);
-        Debug.Log(lvlName + " recording");
     }
 
 

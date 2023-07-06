@@ -2006,7 +2006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _recordTarget: {fileID: 1374915258}
-  _ghostPrefab: {fileID: 5304459651671198311, guid: cf58bf933a92e604194c5bc9877479b7, type: 3}
+  _ghostPrefab: {fileID: 1953035553807199906, guid: 34211056ddd5d454585ed2254e0a084b, type: 3}
   _captureEveryNFrames: 2
 --- !u!4 &314866549
 Transform:
