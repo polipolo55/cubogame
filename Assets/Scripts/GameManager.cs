@@ -13,18 +13,11 @@ public class GameManager : MonoBehaviour
 
     public CameraShake cameraShake;
 
-    public GhostRunner ghostlogic;
-
     public Timer timer;
 
     private List<float> timeStorage = new List<float>();
 
-    public Dictionary<string, string> recordingMap = new Dictionary<string, string>();
-
     public bool TutorialPlayed;
-
-    public bool gamePlayedOnce = false;
-
 
 
     private void Awake()
@@ -40,8 +33,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
-
         if (SceneManager.GetActiveScene().name == "PreLoad")
         {
             SceneManager.LoadScene("Menu");
@@ -59,25 +50,8 @@ public class GameManager : MonoBehaviour
         float sum = timeStorage.Sum();
         return sum;
     }
-
-    public void editMap(string levelName, string data)
+    public List<float> getTimesList()
     {
-        recordingMap[levelName] = data;
-    }
-
-    public void isEmpty()
-    {
-
-    } 
-
-    public void passedLevel()
-    {
-        if (ghostlogic == null) return;
-        ghostlogic.onLevelComplete();
-    }
-
-    public void addToMap(string key, string value)
-    {
-        recordingMap[key] = value;
+        return timeStorage;
     }
 }
