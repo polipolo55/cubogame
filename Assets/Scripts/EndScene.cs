@@ -23,9 +23,6 @@ public class EndScene : MonoBehaviour
     private float sum;
 
 
-    // Start is called before the first frame update
-
-
     void Start()
     {
         sum = GameManager.Instance.totalTime();

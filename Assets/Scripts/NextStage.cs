@@ -24,7 +24,7 @@ public class NextStage : MonoBehaviour
 
     private void nextStage()
     {
-        if(GhostRunner.Instance != null) GhostRunner.Instance.stopRecording();
+        if(GhostRunnerMeu.Instance != null) GhostRunnerMeu.Instance.stopRecording();
         SceneManager.LoadScene(levelName);
         if (SceneManager.GetActiveScene().name == "Level3") GameManager.Instance.gamePlayedOnce = true;
     }
