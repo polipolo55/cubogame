@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     
 
-    private Vector2 moveInput;
+    public Vector2 moveInput;
     public float lastPressedJumpTime { get; private set; }
     public float lastPressedDashTime { get; private set; }
     public float lastPressedGroundSlideTime { get; private set; }
