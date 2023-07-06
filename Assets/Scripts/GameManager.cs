@@ -50,4 +50,8 @@ public class GameManager : MonoBehaviour
         float sum = timeStorage.Sum();
         return sum;
     }
+    public List<float> getTimesList()
+    {
+        return timeStorage;
+    }
 }
