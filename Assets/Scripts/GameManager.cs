@@ -31,7 +31,11 @@ public class GameManager : MonoBehaviour
 
     public bool gamePlayedOnce = false;
 
+
     public float bestTime = 0;
+
+    private float totaltime;
+
 
     
 
@@ -51,6 +55,7 @@ public class GameManager : MonoBehaviour
     {
 
 
+
         if (SceneManager.GetActiveScene().name == "PreLoad")
         {
             SceneManager.LoadScene("Menu");
@@ -64,8 +69,8 @@ public class GameManager : MonoBehaviour
 
     public float totalTime()
     {
-        float sum = timeStorage.Sum();
-        return sum;
+        totaltime = timeStorage.Sum();
+        return totaltime;
     }
 
     public List<float> getTimesList()
@@ -78,6 +83,7 @@ public class GameManager : MonoBehaviour
         recordingMap[key] = rec;
     }
 
+
     public void timeHandler()
     {
         float aux = totalTime();
@@ -89,6 +95,12 @@ public class GameManager : MonoBehaviour
     }
 
     
+
+    public void resetPartialList()
+    {
+        timeStorage.Clear();
+    }
+
 
 }
 
