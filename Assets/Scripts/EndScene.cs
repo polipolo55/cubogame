@@ -23,8 +23,6 @@ public class EndScene : MonoBehaviour
     private float sum;
 
 
-
-    public string levelName;
     // Start is called before the first frame update
 
 
