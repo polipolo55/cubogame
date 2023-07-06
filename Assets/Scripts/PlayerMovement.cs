@@ -162,10 +162,11 @@ public class PlayerMovement : MonoBehaviour
 
     public ParticleSystem dust;
     public ParticleSystemRenderer psr;
+    public GameObject teleport;
 
     private void Awake()
     { 
-        GameManager.Instance.player = this;
+        GameManager.Instance.player = this; 
         rb = GetComponent<Rigidbody2D>();
         isAlive = true;
         
@@ -232,7 +233,14 @@ public class PlayerMovement : MonoBehaviour
 
        // aqui shauria de posar el slide a part
     }
-
+    public void tp(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            transform.position = teleport.transform.position;
+            Debug.Log("TP");
+        }
+    }
     public void HorizontalMove(InputAction.CallbackContext ctx)
     {
         if(canInput) moveInput.x = ctx.ReadValue<float>();
@@ -240,17 +248,15 @@ public class PlayerMovement : MonoBehaviour
     public void VerticalMove(InputAction.CallbackContext ctx)
     {
         if(canInput)
-        {
+        {   
             moveInput.y = ctx.ReadValue<float>();
 
             if (ctx.started && moveInput.y < 0f)
             {
-                Debug.Log("slide input");
                 onGroundSlideInput();
             }
             else if (ctx.canceled && isGroundSlide)
             {
-                Debug.Log("slide release");
                 timeGroundSliding = 0f;
                 onGroundSlideRelease();
             }
@@ -402,7 +408,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (canGroundSlide() && lastPressedGroundSlideTime > 0)
         {
-            Debug.Log("checked and true");
             isGroundSlide = true;
             isJumping = false;
             isWallJumping = false;
@@ -589,7 +594,6 @@ public class PlayerMovement : MonoBehaviour
 
 
         makeDust();
-        Debug.Log("sliding");
 
         rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
 

@@ -4879,6 +4879,7 @@ GameObject:
   - component: {fileID: 3250784796760945287}
   - component: {fileID: 5625509457397139595}
   - component: {fileID: 1110876883342601422}
+  - component: {fileID: -7501227080541014598}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5034,6 +5035,7 @@ MonoBehaviour:
   groundSlideSpeed: 40
   groundSlideAcc: 10
   isAlive: 0
+  moveInput: {x: 0, y: 0}
   groundPoint: {fileID: 8883071157677426415}
   rightPoint: {fileID: 3278958718599709228}
   leftPoint: {fileID: 8152405740650575637}
@@ -5045,6 +5047,7 @@ MonoBehaviour:
   gravityUpdateCheck: 1
   dust: {fileID: 7647042155485330850}
   psr: {fileID: 3540230244109139351}
+  teleport: {fileID: 0}
 --- !u!114 &3250784796760945287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5134,6 +5137,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 951ccd47-d3e7-41cc-8768-b23bfedd40ef
     m_ActionName: Movement/Vertical[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3174301412527104245}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: tp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 47efbc36-058d-4f47-8b85-8923b6c0c8e9
+    m_ActionName: Movement/TP[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Movement
@@ -5195,6 +5214,49 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!66 &-7501227080541014598
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390001711545777363}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+  m_UseDelaunayMesh: 0
+  m_CompositeGameObject: {fileID: 1390001711545777363}
 --- !u!1 &2927893709820639568
 GameObject:
   m_ObjectHideFlags: 0

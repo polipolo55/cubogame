@@ -8,7 +8,6 @@ using System;
 public class EndScene : MonoBehaviour
 {
     public float eventTimer = 0;
-
     public string levelName;
 
 
@@ -23,6 +22,10 @@ public class EndScene : MonoBehaviour
     private bool textDisplayed = false;
     private float sum;
 
+
+
+    public string levelName;
+    // Start is called before the first frame update
 
 
     void Start()
@@ -48,7 +51,6 @@ public class EndScene : MonoBehaviour
         if (eventTimer > 2f && !textDisplayed) displayLeaderboard();
 
         if (eventTimer > 10f) SceneManager.LoadScene(levelName);
-
 
     }
 

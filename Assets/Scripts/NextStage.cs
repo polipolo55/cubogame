@@ -17,13 +17,16 @@ public class NextStage : MonoBehaviour
                 float time = GameManager.Instance.timer.TimeOnEnd();
                 GameManager.Instance.addTime(time);
             }
+            
             nextStage();
         }
     }
 
     private void nextStage()
     {
+        if(GhostRunner.Instance != null) GhostRunner.Instance.stopRecording();
         SceneManager.LoadScene(levelName);
+        if (SceneManager.GetActiveScene().name == "Level3") GameManager.Instance.gamePlayedOnce = true;
     }
 
 
