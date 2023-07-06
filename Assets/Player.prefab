@@ -4879,7 +4879,6 @@ GameObject:
   - component: {fileID: 3250784796760945287}
   - component: {fileID: 5625509457397139595}
   - component: {fileID: 1110876883342601422}
-  - component: {fileID: -7501227080541014598}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4908,7 +4907,7 @@ Transform:
   - {fileID: 6549788963257006817}
   - {fileID: 3036406298642212069}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6418039503724717754
 Rigidbody2D:
@@ -4980,7 +4979,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.95}
   m_EdgeRadius: 0
 --- !u!114 &3174301412527104245
 MonoBehaviour:
@@ -5191,7 +5190,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.5}
-  m_Size: {x: 1, y: 1.8}
+  m_Size: {x: 0.9, y: 1.8}
   m_Direction: 0
 --- !u!95 &1110876883342601422
 Animator:
@@ -5214,49 +5213,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!66 &-7501227080541014598
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390001711545777363}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths: []
-  m_CompositePaths:
-    m_Paths: []
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
-  m_UseDelaunayMesh: 0
-  m_CompositeGameObject: {fileID: 1390001711545777363}
 --- !u!1 &2927893709820639568
 GameObject:
   m_ObjectHideFlags: 0
