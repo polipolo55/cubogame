@@ -27,10 +27,13 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<string, Recording> BestMap = new Dictionary<string, Recording>();
 
+    public Dictionary<float, string> LeaderBoard = new Dictionary<float, string>();
+
     public bool TutorialPlayed;
 
-    public bool gamePlayedOnce = false;
+    public bool runEnding = false;
 
+    public bool gamePlayedOnce = false;
 
     public float bestTime = 0;
 
@@ -83,6 +86,15 @@ public class GameManager : MonoBehaviour
         recordingMap[key] = rec;
     }
 
+    public void addToLeaderboard(string name, float time)
+    {
+        LeaderBoard[time] = name;
+    }
+
+    public Dictionary<float, string> getLeaderboard()
+    {
+        return LeaderBoard;
+    }
 
     public void timeHandler()
     {
