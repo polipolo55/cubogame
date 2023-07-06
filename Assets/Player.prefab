@@ -5138,7 +5138,19 @@ MonoBehaviour:
     m_ActionId: 951ccd47-d3e7-41cc-8768-b23bfedd40ef
     m_ActionName: Movement/Vertical[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3174301412527104245}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: tp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 47efbc36-058d-4f47-8b85-8923b6c0c8e9
     m_ActionName: Movement/TP[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0

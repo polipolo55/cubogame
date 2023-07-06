@@ -235,9 +235,10 @@ public class PlayerMovement : MonoBehaviour
     }
     public void tp(InputAction.CallbackContext ctx)
     {
-        if(ctx.started)
+        if(ctx.performed)
         {
             transform.position = teleport.transform.position;
+            Debug.Log("TP");
         }
     }
     public void HorizontalMove(InputAction.CallbackContext ctx)
@@ -407,7 +408,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (canGroundSlide() && lastPressedGroundSlideTime > 0)
         {
-            Debug.Log("checked and true");
             isGroundSlide = true;
             isJumping = false;
             isWallJumping = false;
@@ -594,7 +594,6 @@ public class PlayerMovement : MonoBehaviour
 
 
         makeDust();
-        Debug.Log("sliding");
 
         rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
 
