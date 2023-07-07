@@ -85,7 +85,7 @@ public class EndScene : MonoBehaviour
             secret.SetActive(true);
         }
 
-        for (int i = 1; i <= floatList.Count; i++)
+        for (int i = 0; i < floatList.Count; i++)
         {
             Vector2 position = startingPosition + new Vector2(0f, -lineHeight * i);
 
@@ -99,7 +99,7 @@ public class EndScene : MonoBehaviour
 
             string text = time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00") + "." + time.Milliseconds.ToString("00");
 
-            textMeshPro.text = string.Format("{0}.- {1}", i, text);
+            textMeshPro.text = string.Format("{0}.- {1}", i+1, text);
         }
 
         GameManager.Instance.resetPartialList();
@@ -126,6 +126,7 @@ public class EndScene : MonoBehaviour
     {
         if (inputField != null) 
         {
+            GameManager.Instance.resetPartialList();
             Debug.Log("data: " + GetInputData() + " " + sum);
             GameManager.Instance.addToLeaderboard(inputField.text, sum);
             SceneManager.LoadScene(levelName);
@@ -134,6 +135,7 @@ public class EndScene : MonoBehaviour
 
     public void cancel()
     {
+        GameManager.Instance.resetPartialList();
         SceneManager.LoadScene(levelName);
     }
 }

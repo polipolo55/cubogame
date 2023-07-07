@@ -64,7 +64,11 @@ public class CloudLogic : MonoBehaviour
         accelDiff = (playerPos - accelThreshold) - gas.transform.position.x;
         deccelDiff = gas.transform.position.x - (playerPos - deccelThreshold);
 
-        if (accelDiff > 0) accelMult = 1 + Mathf.Pow(accelDiff / accelDiv, 2);
+        if (accelDiff > 0) 
+        {
+            if (1 + Mathf.Pow(accelDiff / accelDiv, 2) < 0.1f) accelMult = 0.1f;
+            else accelMult = 1 + Mathf.Pow(accelDiff / accelDiv, 2);
+        } 
         else if (deccelDiff > 0) 
         {
             if (1 - Mathf.Pow(deccelDiff / deccelDiv, 2) > 0.1f)
